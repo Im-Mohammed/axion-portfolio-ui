@@ -1,0 +1,373 @@
+/* === Base Styles (Laptop/Desktop First) === */
+.contact-section {
+  position: relative;
+  padding: 6rem 2rem;
+  background-color: #000000;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+.gradient-blinds {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #7855f7 0%, #33ccff 100%);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.contact-title {
+  font-size: 3rem;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px #7855f7;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-subtext {
+  font-size: 20px;
+  color: rgba(220, 220, 220, 0.85);
+  margin-top: -10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-btn {
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid white;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.contact-btn i {
+  font-size: 1.2rem;
+}
+
+.contact-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #7855f7, #33ccff);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.contact-btn:hover::before {
+  opacity: 0.3;
+}
+
+.contact-btn:hover {
+  transform: scale(1.08) rotate(-1deg);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4),
+              0 0 40px rgba(120, 85, 247, 0.6);
+  border-color: transparent;
+  color: white;
+}
+
+.contact-btn.email:hover {
+  background: linear-gradient(135deg, #ea4335, #ff6b6b);
+}
+
+.contact-btn.linkedin:hover {
+  background: linear-gradient(135deg, #0077b5, #00a0dc);
+}
+
+.contact-btn.github:hover {
+  background: linear-gradient(135deg, #ffffff, #000000);
+  color: #000;
+}
+
+.contact-inputs {
+  position: relative;
+  z-index: 1;
+  gap: 2rem; 
+}
+
+.contact-input {
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid #7855f7;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.3),
+    0 0 24px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.contact-input:focus {
+  outline: none;
+  transform: scale(1.02);
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(120, 85, 247, 0.6);
+}
+
+.contact-action-btn {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid #7855f7;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.3),
+    0 0 24px rgba(120, 85, 247, 0.2);
+}
+
+.contact-action-btn:hover {
+  background-color: #7e22ce;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(120, 85, 247, 0.6);
+}
+
+.contact-action-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.contact-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.contact-action-btn:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(120, 85, 247, 0.4);
+}
+
+.email-action-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.email-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.start-label {
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 500;
+}
+
+.send-icon {
+  font-size: 1rem;
+  color: #7e22ce;
+  border: 2px solid white;
+  border-radius: 50%;
+  padding: 0.6rem;
+  background-color: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-icon:hover {
+  border-color: #7e22ce;
+  background-color: #7e22ce;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(120, 85, 247, 0.6);
+}
+
+.send-icon:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 20px rgba(120, 85, 247, 0.4);
+}
+
+.status-text {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: #a78bfa;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.send-icon.sending {
+  animation: pulse 0.6s infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.contact-status {
+  margin-top: 0.5rem;
+  color: #7e22ce;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* === Responsive Design === */
+
+/* Small Laptops/Tablets (768px–1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .contact-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-subtext {
+    font-size: 1.1rem;
+  }
+
+  .contact-buttons {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .contact-input {
+    max-width: 300px;
+  }
+
+  .contact-action-btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.2rem;
+  }
+
+  .start-label {
+    font-size: 1rem;
+  }
+
+  .send-icon {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Mobile Devices (below 768px) */
+@media (max-width: 767px) {
+  .contact-section {
+    padding: 3rem 1rem;
+  }
+
+  .contact-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-subtext {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .contact-input {
+    max-width: 100%;
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
+  .contact-action-btn {
+    font-size: 0.95rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .contact-action-wrapper {
+    margin-top: 1rem;
+  }
+
+  .contact-action-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .email-action-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .start-label {
+    font-size: 1rem;
+  }
+
+  .send-icon {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}

@@ -1,0 +1,126 @@
+/* === Base Styles (Laptop/Desktop First) === */
+.achievements-section {
+  padding: 6rem 2rem;
+  background-color: #000;
+  color: white;
+}
+
+.achievements-title {
+  font-size: 3rem;
+  text-align: center;
+  color: hsl(0, 0%, 98%);
+  margin-bottom: 3rem;
+  text-shadow: 0 0 10px #7855f7;
+}
+
+.gallery-wrapper {
+  height: 600px;
+  margin-bottom: 4rem;
+  position: relative;
+  overflow: visible;
+}
+
+.circular-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(120, 85, 247, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.circular-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(120, 85, 247, 0.6);
+}
+
+.badge-title-links {
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.badge-title-link {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-shadow: 0 0 6px #7855f7;
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(120, 85, 247, 0.3);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge-title-link:hover {
+  background: rgba(120, 85, 247, 0.2);
+  box-shadow: 0 0 10px rgba(120, 85, 247, 0.6);
+}
+
+
+/* === Small Laptops/Tablets (between 768px and 1024px) === */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .achievements-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .gallery-wrapper {
+    height: 500px;
+    margin-bottom: 3rem;
+  }
+
+  .circular-card {
+    padding: 1rem;
+  }
+
+  .badge-title-link {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
+
+/* === Mobile Devices (below 768px) === */
+/* === Mobile Devices (below 768px) === */
+@media (max-width: 767px) {
+  .achievements-section {
+    padding: 3rem 1rem;
+  }
+
+  .achievements-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .gallery-wrapper {
+    height: auto;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap; /* allow cards to wrap to next line */
+    justify-content: center;
+    gap: 1rem; /* space between cards */
+  }
+
+  .circular-card {
+    width: 120px;   /* reduced from default */
+    height: 120px;  /* reduced from default */
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+  }
+
+  .badge-title-links {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center; /* center the badges */
+  }
+
+  .badge-title-link {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}

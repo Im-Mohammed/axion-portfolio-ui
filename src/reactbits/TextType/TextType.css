@@ -1,0 +1,18 @@
+.text-type {
+  display: inline-block;
+  white-space: pre-wrap;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.text-type__cursor {
+  margin-left: 0.25rem;
+  display: inline-block;
+  opacity: 1;
+}
+
+.text-type__cursor--hidden {
+  display: none;
+}

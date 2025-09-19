@@ -1,0 +1,133 @@
+/* === Base Styles (Laptop/Desktop First) === */
+.experience-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  color: white;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  padding-top: 50px;
+  background-color: #0f0f1a;
+}
+
+.light-rays-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.service-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(85, 51, 234, 0.2),
+    rgba(85, 51, 234, 0.05)
+  );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid rgba(85, 51, 234, 0.4);
+  box-shadow: 0 0 40px rgba(85, 51, 234, 0.6);
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 60px rgba(85, 51, 234, 0.8);
+}
+
+.vertical-timeline-element-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.vertical-timeline-element-subtitle {
+  font-size: 1.2rem;
+  color: #a1a1aa;
+  margin-bottom: 1rem;
+}
+
+.vertical-timeline-element-content p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #d1d5db;
+}
+
+.vertical-timeline {
+  padding: 0;
+}
+
+/* === Small Laptops/Tablets (between 768px and 1024px) === */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .service-content {
+    max-width: 700px;
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .glass-card {
+    padding: 1rem;
+  }
+
+  .vertical-timeline-element-title {
+    font-size: 1.8rem;
+  }
+
+  .vertical-timeline-element-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .vertical-timeline-element-content p {
+    font-size: 1.1rem;
+  }
+}
+
+/* === Mobile Devices (below 768px) === */
+@media (max-width: 767px) {
+  .service-content {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .glass-card {
+    padding: 0.8rem;
+  }
+
+  .vertical-timeline-element-title {
+    font-size: 1.4rem;
+  }
+
+  .vertical-timeline-element-subtitle {
+    font-size: 1rem;
+  }
+
+  .vertical-timeline-element-content p {
+    font-size: 1rem;
+  }
+}

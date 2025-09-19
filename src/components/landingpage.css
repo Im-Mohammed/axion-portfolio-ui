@@ -1,0 +1,63 @@
+/* === Base Styles (Laptop / Desktop First) === */
+.landing-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full screen */
+  overflow: hidden;
+}
+
+.spline-scene {
+  width: 100%;
+  height: 100vh;
+  position: absolute; /* keep spline in background */
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.variable-text {
+  z-index: 10;
+  position: relative;
+  padding-top: 150px;
+  padding-left: 50px;
+  padding-right: 50px;
+  color: #ffffff;
+}
+
+/* === Small Laptops/Tablets (between 768px and 1024px) === */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .variable-text {
+    padding-top: 120px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+/* === Mobile Devices (below 768px) === */
+/* === Mobile Devices (below 768px) === */
+@media (max-width: 767px) {
+  .landing-container {
+    height: auto; /* Allow content to grow */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* start below navbar */
+    align-items: center;
+    padding-top: 120px; /* add top padding equal to navbar height + margin */
+  }
+
+  .spline-scene {
+    height: calc(100vh - 120px); /* full height minus navbar */
+  }
+
+  .variable-text {
+    padding-top: 20px; /* extra spacing inside container */
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    z-index: 10;
+  }
+}
+
+

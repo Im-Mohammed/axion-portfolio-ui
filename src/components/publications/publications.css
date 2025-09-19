@@ -1,0 +1,130 @@
+/* === Base Styles (Laptop/Desktop First) === */
+.publications-section {
+  padding: 6rem 2rem;
+  background-color: #000;
+  color: white;
+}
+
+.publications-title {
+  font-size: 3rem;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 10px #7855f7;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.bento-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid #7855f7;
+  border-radius: 16px;
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.4),
+    0 0 24px rgba(255, 255, 255, 0.2),
+    0 0 36px rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bento-card:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 40px rgba(255, 255, 255, 0.4),
+    0 0 60px rgba(255, 255, 255, 0.2);
+}
+
+.bento-icon {
+  width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+}
+
+.bento-content h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.bento-content p {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+
+/* === Small Laptops/Tablets (between 768px and 1024px) === */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .publications-title {
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .bento-grid {
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .bento-card {
+    padding: 1.2rem;
+  }
+
+  .bento-icon {
+    max-height: 140px;
+  }
+
+  .bento-content h2 {
+    font-size: 1.1rem;
+  }
+
+  .bento-content p {
+    font-size: 0.85rem;
+  }
+}
+
+/* === Mobile Devices (below 768px) === */
+@media (max-width: 767px) {
+  .publications-section {
+    padding: 3rem 1rem;
+  }
+
+  .publications-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr; /* Single column for mobile */
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .bento-card {
+    padding: 1rem;
+  }
+
+  .bento-icon {
+    max-height: 120px;
+  }
+
+  .bento-content h2 {
+    font-size: 1rem;
+  }
+
+  .bento-content p {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,58 @@
+/* === Base Styles (Laptop/Desktop First) === */
+.projects-section {
+  background-color: #000;
+  color: white;
+  padding: 2rem 2rem;
+  box-sizing: border-box;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.projects-title {
+  font-size: 3rem;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 10px #5533ea;
+}
+
+.chroma-wrapper {
+  min-height: 600px;
+  height: auto;
+  position: relative;
+  overflow: visible;
+  background-color: #000;
+  padding-bottom: 2rem;
+}
+
+
+/* === Small Laptops/Tablets (between 768px and 1024px) === */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .projects-title {
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chroma-wrapper {
+    min-height: 500px;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* === Mobile Devices (below 768px) === */
+@media (max-width: 767px) {
+  .projects-section {
+    padding: 1.5rem 1rem;
+    min-height: auto; /* Allow height to expand as needed */
+  }
+
+  .projects-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .chroma-wrapper {
+    min-height: auto;
+    padding-bottom: 1rem;
+  }
+}
