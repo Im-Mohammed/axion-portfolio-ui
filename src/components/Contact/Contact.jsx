@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './contact.css';
+import './Contact.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
