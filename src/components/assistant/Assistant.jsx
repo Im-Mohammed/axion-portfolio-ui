@@ -26,7 +26,7 @@ const AxionTwin = ({ onClose }) => {
     setTyping(true);
 
     try {
-      const res = await fetch('http://localhost:8000/chat', {
+      const res = await fetch('http://16.171.23.173:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text })
