@@ -1,5 +1,5 @@
 import React from 'react';
-import './service.css';
+import './Service.css';
 import LightRays from '../../reactbits/LightRays/LightRays';
 import {
   VerticalTimeline,
