@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Contact.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://axion-backend-api-latest.onrender.com/chat';
+const API_URL = import.meta.env.VITE_API_URL || 'https://axion-backend-api-latest.onrender.com/';
 
 export const Contact = () => {
   const [activeField, setActiveField] = useState('');
