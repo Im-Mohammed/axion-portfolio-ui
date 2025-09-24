@@ -171,10 +171,19 @@
     font-size: 1.1rem;
     padding: 1rem 2rem;
   }
-}/* === Mobile (below 768px) === */
+}/* === Mobile (below 768px) === *//* === General Mobile Fix (below 768px) === */
 @media screen and (max-width: 767px) {
-  .welcome-text {
-    font-size: clamp(1rem, 4vw, 1.25rem);
+  .chat-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .chat-text,
+  .chat-subtext {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
     max-width: 90vw;
     text-align: center;
     word-wrap: break-word;
@@ -183,29 +192,16 @@
     padding: 0 1rem;
   }
 
-  .prompt-text {
-    font-size: clamp(0.875rem, 3.5vw, 1.125rem);
-    max-width: 85vw;
-    text-align: center;
-    word-wrap: break-word;
-    margin-top: 1rem;
-    padding: 0 1rem;
-  }
-
-  .input-wrapper {
+  .chat-input {
     width: 100%;
-    max-width: 320px;
-    margin: 1rem auto;
-  }
-
-  .name-input {
-    font-size: 0.9rem;
+    max-width: 300px;
+    font-size: 0.875rem;
     padding: 0.6rem 0.8rem;
-    width: 100%;
     box-sizing: border-box;
+    margin: 0 auto;
   }
 
-  .next-button {
+  .glass-button {
     font-size: 0.875rem;
     padding: 0.6rem 1.2rem;
     margin-top: 0.5rem;
@@ -214,31 +210,31 @@
   .robot-wrapper {
     width: 220px;
     height: 220px;
-    margin: 2rem auto 0;
     flex-shrink: 0;
+    margin-top: 2rem;
   }
 }
 
-/* === iPhone 12 Specific (≈390px width) === */
+/* === iPhone 12 Specific Fix (≈390px width) === */
 @media screen and (max-width: 400px) {
-  .welcome-text,
-  .prompt-text {
-    font-size: 0.875rem;
-    max-width: 90vw;
+  .chat-text,
+  .chat-subtext {
+    font-size: 0.85rem;
+    max-width: 88vw;
   }
 
-  .name-input {
+  .chat-input {
     font-size: 0.85rem;
     max-width: 280px;
+  }
+
+  .glass-button {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
   }
 
   .robot-wrapper {
     width: 200px;
     height: 200px;
-  }
-
-  .next-button {
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
   }
 }
