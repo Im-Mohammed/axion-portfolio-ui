@@ -219,26 +219,43 @@
   }
 }
 
-/* === iPhone 12 Specific (≈390px width) === */
-@media screen and (max-width: 400px) {
+/* === iPhone 12 Specific (≈390px width) === */@media screen and (max-width: 400px) {
+  .chat-container {
+    width: 100vw;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
   .welcome-text,
   .prompt-text {
     font-size: 0.875rem;
-    max-width: 90vw;
+    max-width: 88vw;
+    text-align: center;
+    word-wrap: break-word;
+    line-height: 1.4;
+    margin: 0 auto;
   }
 
   .name-input {
     font-size: 0.85rem;
     max-width: 280px;
-  }
-
-  .robot-wrapper {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    box-sizing: border-box;
+    margin: 1rem auto;
   }
 
   .next-button {
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .robot-wrapper {
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+    margin: 2rem auto 0;
   }
 }
