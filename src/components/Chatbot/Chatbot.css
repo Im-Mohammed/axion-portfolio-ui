@@ -172,48 +172,79 @@
     padding: 1rem 2rem;
   }
 }
-
 /* === Mobile (below 768px) === */
 @media screen and (max-width: 767px) {
   .chat-inner {
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    padding: 1rem;
   }
 
-  .chat-text {
-    font-size: 1rem;
-    text-align: center;
-  }
-
+  .chat-text,
   .chat-subtext {
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
     text-align: center;
+    max-width: 90vw;
+    word-wrap: break-word;
+  }
+
+  .chat-input {
+    width: 100%;
+    max-width: 320px;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    padding: 0.6rem 0.8rem;
+    box-sizing: border-box;
+  }
+
+  .glass-button {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    padding: 0.6rem 1.2rem;
+  }
+
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
   }
 
   .chat-robot {
     width: 220px;
     height: 220px;
+    flex-shrink: 0;
     margin-top: 1.5rem;
     transform: translateX(0);
   }
 
   .robot-wrapper {
-    width: max-content;
-    height: max-content;
+    min-width: 220px;
+    min-height: 220px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* === iPhone 12 Specific (≈390px width) === */
+@media screen and (max-width: 400px) {
+  .chat-input {
+    max-width: 280px;
+    font-size: 0.875rem;
+  }
+
+  .chat-text,
+  .chat-subtext {
+    font-size: 0.875rem;
+  }
+
+  .chat-robot {
+    width: 200px;
+    height: 200px;
   }
 
   .glass-button {
-    font-size: 1rem;
-    padding: 0.8rem 1.5rem;
-  }
-
-  .chat-input {
-    font-size: 1rem;
-    padding: 0.8rem;
-  }
-
-  .button-group {
-    gap: 1rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
   }
 }
