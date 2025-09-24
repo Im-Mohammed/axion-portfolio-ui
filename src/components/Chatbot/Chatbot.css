@@ -171,80 +171,74 @@
     font-size: 1.1rem;
     padding: 1rem 2rem;
   }
-}
-/* === Mobile (below 768px) === */
+}/* === Mobile (below 768px) === */
 @media screen and (max-width: 767px) {
-  .chat-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    padding: 1rem;
-  }
-
-  .chat-text,
-  .chat-subtext {
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
-    text-align: center;
+  .welcome-text {
+    font-size: clamp(1rem, 4vw, 1.25rem);
     max-width: 90vw;
+    text-align: center;
     word-wrap: break-word;
+    line-height: 1.4;
+    margin: 0 auto;
+    padding: 0 1rem;
   }
 
-  .chat-input {
+  .prompt-text {
+    font-size: clamp(0.875rem, 3.5vw, 1.125rem);
+    max-width: 85vw;
+    text-align: center;
+    word-wrap: break-word;
+    margin-top: 1rem;
+    padding: 0 1rem;
+  }
+
+  .input-wrapper {
     width: 100%;
     max-width: 320px;
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    margin: 1rem auto;
+  }
+
+  .name-input {
+    font-size: 0.9rem;
     padding: 0.6rem 0.8rem;
+    width: 100%;
     box-sizing: border-box;
   }
 
-  .glass-button {
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  .next-button {
+    font-size: 0.875rem;
     padding: 0.6rem 1.2rem;
-  }
-
-  .button-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .chat-robot {
-    width: 220px;
-    height: 220px;
-    flex-shrink: 0;
-    margin-top: 1.5rem;
-    transform: translateX(0);
+    margin-top: 0.5rem;
   }
 
   .robot-wrapper {
-    min-width: 220px;
-    min-height: 220px;
-    display: flex;
-    justify-content: center;
+    width: 220px;
+    height: 220px;
+    margin: 2rem auto 0;
+    flex-shrink: 0;
   }
 }
 
 /* === iPhone 12 Specific (≈390px width) === */
 @media screen and (max-width: 400px) {
-  .chat-input {
+  .welcome-text,
+  .prompt-text {
+    font-size: 0.875rem;
+    max-width: 90vw;
+  }
+
+  .name-input {
+    font-size: 0.85rem;
     max-width: 280px;
-    font-size: 0.875rem;
   }
 
-  .chat-text,
-  .chat-subtext {
-    font-size: 0.875rem;
-  }
-
-  .chat-robot {
+  .robot-wrapper {
     width: 200px;
     height: 200px;
   }
 
-  .glass-button {
-    font-size: 0.875rem;
+  .next-button {
+    font-size: 0.85rem;
     padding: 0.5rem 1rem;
   }
 }
