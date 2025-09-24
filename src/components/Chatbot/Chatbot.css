@@ -171,60 +171,104 @@
     font-size: 1.1rem;
     padding: 1rem 2rem;
   }
-}/* === Mobile (below 768px) === */
-/* === Mobile Devices (≤ 767px) === */
+}
+
+/* === Mobile (below 768px) === */
 @media screen and (max-width: 767px) {
-  .chat-container {
+  .chatbot-container {
+    padding: 1.5rem 1rem;
     width: 100vw;
-    padding: 2rem 1rem;
     box-sizing: border-box;
     overflow-x: hidden;
   }
 
-  .welcome-text {
-    font-size: clamp(0.875rem, 4vw, 1.125rem);
+  .chat-box {
+    position: relative;
+    width: 100%;
+    max-width: 95vw;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    min-height: 80vh;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .chat-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .chat-content {
+    width: 100%;
     max-width: 90vw;
     text-align: center;
-    word-wrap: break-word;
-    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+
+  .chat-text,
+  .chat-subtext {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 90vw;
     margin: 0 auto;
-    padding: 0 1rem;
-  }
-
-  .prompt-text {
-    font-size: clamp(0.85rem, 3.5vw, 1.1rem);
-    max-width: 88vw;
-    text-align: center;
     word-wrap: break-word;
-    margin-top: 1rem;
-    padding: 0 1rem;
+    text-align: center;
   }
 
-  .input-wrapper {
+  .chat-input {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+    max-width: 240px;
     width: 100%;
-    max-width: 320px;
-    margin: 1rem auto;
-  }
-
-  .name-input {
-    font-size: 0.85rem;
-    padding: 0.6rem 0.8rem;
-    width: 100%;
-    max-width: 280px;
     box-sizing: border-box;
     margin: 1rem auto;
+    background-color: black;
+    color: #d8b4fe;
+    border: 1px solid #7855f7;
+    border-radius: 0.75rem;
   }
 
-  .next-button {
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
-    margin-top: 0.5rem;
+  .glass-button {
+    font-size: 0.95rem;
+    padding: 0.8rem 1.5rem;
+  }
+
+  .button-group {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .chat-robot {
+    width: 220px;
+    height: 220px;
+    margin-top: 2rem;
+    transform: translateX(0);
+    flex-shrink: 0;
   }
 
   .robot-wrapper {
-    width: 200px;
-    height: 200px;
-    flex-shrink: 0;
-    margin: 2rem auto 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
   }
 }

@@ -124,158 +124,156 @@ export default function ChatBot() {
     }
   }, [resumeSent]);
 
- return (
-  <div className="chatbot-container">
-    <div className="background-layer">
-      <DarkVeil />
-    </div>
-
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1 }}
-      className="chat-box"
-    >
-      {/* ✅ Back button pinned to top-left */}
-      {step > 0 && <BackButton onClick={prevStep} />}
-
-      <div className="chat-inner">
-        <div className="chat-content">
-          <SplitText
-            text="Welcome to Mohammed’s digital frontier. I’m Axion—your adaptive co-pilot."
-            type="lines"
-            className="chat-text typing-text"
-          />
-
-          <AnimatePresence>
-            {step === 0 && (
-              <>
-                <p className="chat-subtext">
-                  This isn’t just a portfolio—it’s a precision-crafted interface where design listens and intelligence responds.
-                </p>
-                <p className="chat-subtext mt-2">Let’s begin. Who do I have the honor of guiding today?</p>
-                <div className="button-group">
-                  <GlassButton label="Visitor" onClick={() => { setRole('visitor'); nextStep(); }} />
-                  <GlassButton label="HR" onClick={() => { setRole('hr'); nextStep(); }} />
-                </div>
-              </>
-            )}
-
-            {step === 1 && (
-              <>
-                <p className="chat-subtext">May I have your name?</p>
-                <input
-                  type="text"
-                  className="chat-input"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                  placeholder="Enter your name"
-                />
-                <div className="button-group">
-                  <GlassButton label="Next" onClick={nextStep} />
-                </div>
-              </>
-            )}
-
-            {step === 2 && role === 'visitor' && (
-              <>
-                <p className="chat-subtext">And your email?</p>
-                <input
-                  type="email"
-                  className="chat-input"
-                  value={visitorEmail}
-                  onChange={e => setVisitorEmail(e.target.value)}
-                  placeholder="Enter your email"
-                />
-                <div className="button-group">
-                  <GlassButton label="Continue to Portfolio" onClick={handleVisitorFlow} />
-                </div>
-              </>
-            )}
-
-            {step === 2 && role === 'hr' && (
-              <>
-                <p className="chat-subtext">What’s your company name?</p>
-                <input
-                  type="text"
-                  className="chat-input"
-                  value={company}
-                  onChange={e => setCompany(e.target.value)}
-                  placeholder="Enter company name"
-                />
-                <div className="button-group">
-                  <GlassButton label="Next" onClick={nextStep} />
-                </div>
-              </>
-            )}
-
-            {step === 3 && role === 'hr' && (
-              <>
-                <p className="chat-subtext">Your email?</p>
-                <input
-                  type="email"
-                  className="chat-input"
-                  value={hrEmail}
-                  onChange={e => setHrEmail(e.target.value)}
-                  placeholder="Enter your email"
-                />
-                <div className="button-group">
-                  <GlassButton label="Next" onClick={nextStep} />
-                </div>
-              </>
-            )}
-
-            {step === 4 && role === 'hr' && (
-              <>
-                <p className="chat-subtext">Are you currently looking to hire a candidate?</p>
-                <div className="button-group">
-                  <GlassButton label="Yes" onClick={() => { setIsHiring(true); nextStep(); }} />
-                  <GlassButton label="No" onClick={() => { setIsHiring(false); nextStep(); }} />
-                </div>
-              </>
-            )}
-
-            {step === 5 && isHiring === true && (
-              <>
-                <p className="chat-subtext">Great! Could you describe the role you're hiring for?</p>
-                <textarea
-                  className="chat-input"
-                  value={roleDescription}
-                  onChange={e => setRoleDescription(e.target.value)}
-                  placeholder="Describe the role"
-                />
-                <div className="button-group">
-                  <GlassButton label="Send Resume" onClick={sendCustomizedResume} />
-                </div>
-              </>
-            )}
-
-            {step === 5 && isHiring === false && (
-              <>
-                <p className="chat-subtext">No problem. I’ll still send you Mohammed’s resume for future reference.</p>
-                <div className="button-group">
-                  <GlassButton label="Send Resume" onClick={sendDefaultResume} />
-                </div>
-              </>
-            )}
-
-            {loading && <p className="chat-subtext mt-3">Sending resume…</p>}
-            {resumeSent && <p className="chat-subtext mt-3">Resume sent! Redirecting…</p>}
-            {error && <p className="chat-subtext error-text">{error}</p>}
-          </AnimatePresence>
-        </div>
-
-        <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          className="chat-robot"
-        >
-          <Spline scene="/spline/scene2.splinecode" />
-        </motion.div>
+  return (
+    <div className="chatbot-container">
+      <div className="background-layer">
+        <DarkVeil />
       </div>
-    </motion.div>
-  </div>
-);
 
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1 }}
+        className="chat-box"
+      >
+        <div className="chat-inner">
+          <div className="chat-content">
+            {step > 0 && <BackButton onClick={prevStep} />}
+
+            <SplitText
+              text="Welcome to Mohammed’s digital frontier. I’m Axion—your adaptive co-pilot."
+              type="lines"
+              className="chat-text typing-text"
+            />
+
+            <AnimatePresence>
+              {step === 0 && (
+                <>
+                  <p className="chat-subtext">
+                    This isn’t just a portfolio—it’s a precision-crafted interface where design listens and intelligence responds.
+                  </p>
+                  <p className="chat-subtext mt-2">Let’s begin. Who do I have the honor of guiding today?</p>
+                  <div className="button-group">
+                    <GlassButton label="Visitor" onClick={() => { setRole('visitor'); nextStep(); }} />
+                    <GlassButton label="HR" onClick={() => { setRole('hr'); nextStep(); }} />
+                  </div>
+                </>
+              )}
+
+              {step === 1 && (
+                <>
+                  <p className="chat-subtext">May I have your name?</p>
+                  <input
+                    type="text"
+                    className="chat-input"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    placeholder="Enter your name"
+                  />
+                  <div className="button-group">
+                    <GlassButton label="Next" onClick={nextStep} />
+                  </div>
+                </>
+              )}
+
+              {step === 2 && role === 'visitor' && (
+                <>
+                  <p className="chat-subtext">And your email?</p>
+                  <input
+                    type="email"
+                    className="chat-input"
+                    value={visitorEmail}
+                    onChange={e => setVisitorEmail(e.target.value)}
+                    placeholder="Enter your email"
+                  />
+                  <div className="button-group">
+                    <GlassButton label="Continue to Portfolio" onClick={handleVisitorFlow} />
+                  </div>
+                </>
+              )}
+
+              {step === 2 && role === 'hr' && (
+                <>
+                  <p className="chat-subtext">What’s your company name?</p>
+                  <input
+                    type="text"
+                    className="chat-input"
+                    value={company}
+                    onChange={e => setCompany(e.target.value)}
+                    placeholder="Enter company name"
+                  />
+                  <div className="button-group">
+                    <GlassButton label="Next" onClick={nextStep} />
+                  </div>
+                </>
+              )}
+
+              {step === 3 && role === 'hr' && (
+                <>
+                  <p className="chat-subtext">Your email?</p>
+                  <input
+                    type="email"
+                    className="chat-input"
+                    value={hrEmail}
+                    onChange={e => setHrEmail(e.target.value)}
+                    placeholder="Enter your email"
+                  />
+                  <div className="button-group">
+                    <GlassButton label="Next" onClick={nextStep} />
+                  </div>
+                </>
+              )}
+
+              {step === 4 && role === 'hr' && (
+                <>
+                  <p className="chat-subtext">Are you currently looking to hire a candidate?</p>
+                  <div className="button-group">
+                    <GlassButton label="Yes" onClick={() => { setIsHiring(true); nextStep(); }} />
+                    <GlassButton label="No" onClick={() => { setIsHiring(false); nextStep(); }} />
+                  </div>
+                </>
+              )}
+
+              {step === 5 && isHiring === true && (
+                <>
+                  <p className="chat-subtext">Great! Could you describe the role you're hiring for?</p>
+                  <textarea
+                    className="chat-input"
+                    value={roleDescription}
+                    onChange={e => setRoleDescription(e.target.value)}
+                    placeholder="Describe the role"
+                  />
+                                    <div className="button-group">
+                    <GlassButton label="Send Resume" onClick={sendCustomizedResume} />
+                  </div>
+                </>
+              )}
+
+              {step === 5 && isHiring === false && (
+                <>
+                  <p className="chat-subtext">No problem. I’ll still send you Mohammed’s resume for future reference.</p>
+                  <div className="button-group">
+                    <GlassButton label="Send Resume" onClick={sendDefaultResume} />
+                  </div>
+                </>
+              )}
+
+              {loading && <p className="chat-subtext mt-3">Sending resume…</p>}
+              {resumeSent && <p className="chat-subtext mt-3">Resume sent! Redirecting…</p>}
+              {error && <p className="chat-subtext error-text">{error}</p>}
+            </AnimatePresence>
+          </div>
+
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1.2 }}
+            className="chat-robot"
+          >
+            <Spline scene="/spline/scene2.splinecode" />
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  );
 }
