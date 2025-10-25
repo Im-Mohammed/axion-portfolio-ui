@@ -162,7 +162,7 @@ export default function ChatBot() {
 
               {step === 1 && (
                 <>
-                  <p className="chat-subtext">May I have your name?</p>
+                  <p className="chat-subtext">May I have your name? <span className="required">*</span></p>
                   <input
                     type="text"
                     className="chat-input"
@@ -178,7 +178,7 @@ export default function ChatBot() {
 
               {step === 2 && role === 'visitor' && (
                 <>
-                  <p className="chat-subtext">And your email?</p>
+                  <p className="chat-subtext">And your email? <span className="required">*</span></p>
                   <input
                     type="email"
                     className="chat-input"
@@ -194,7 +194,7 @@ export default function ChatBot() {
 
               {step === 2 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">What’s your company name?</p>
+                  <p className="chat-subtext">Your email? <span className="required">*</span></p>
                   <input
                     type="text"
                     className="chat-input"
@@ -210,7 +210,7 @@ export default function ChatBot() {
 
               {step === 3 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Your email?</p>
+                  <p className="chat-subtext">Your email? <span className="required">*</span></p>
                   <input
                     type="email"
                     className="chat-input"
@@ -259,7 +259,9 @@ export default function ChatBot() {
               )}
 
               {loading && <p className="chat-subtext mt-3">Sending resume…</p>}
-              {resumeSent && <p className="chat-subtext mt-3">Resume sent! Redirecting…</p>}
+              {resumeSent && (<p className="chat-subtext mt-3">Resume sent via email ✅ — If you don’t see it, please check your spam folder.</p>
+    )}
+
               {error && <p className="chat-subtext error-text">{error}</p>}
             </AnimatePresence>
           </div>

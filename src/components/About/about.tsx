@@ -11,17 +11,17 @@ export const About = () => {
       <div className="about-photo">
         <ProfileCard
                   name="Mohammed Karab"
-                  title="AI Developer"
+                  title="AI and Software Developer"
                   handle="Im-Mohammed"
                   status="Online"
                   contactText="Contact Me"
-                  avatarUrl="/images/me.png"
+                  avatarUrl="/images/about.png"
                   showUserInfo={true}
                   enableTilt={true}
                   enableMobileTilt={false}
                   grainUrl="/images/grain.png"
                   iconUrl="/images/icon2.png"
-                  onContactClick={() => console.log('Contact clicked')}
+                  onContactClick={() => window.open('https://www.linkedin.com/in/mohammed-karab-ehtesham-469b83366', '_blank')}
                   behindGradient={undefined}
                   innerGradient={undefined}
                   miniAvatarUrl={undefined}

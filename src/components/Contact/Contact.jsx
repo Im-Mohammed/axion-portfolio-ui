@@ -45,14 +45,14 @@ export const Contact = () => {
     const result = await response.json();
 
     if (result.email_sent) {
-      setStatusMessage('Conversation started ✅');
+      setStatusMessage('Email sent ✅ — If it hasn’t landed in your inbox, take a peek in your spam folder.');
     }
-    if (result.github_followed) {
+    if (formData.github && result.github_followed) {
       setStatusMessage('GitHub request sent ✅');
       setFormData(prev => ({ ...prev, github: '' }));
     }
-    if (result.linkedin_connected) {
-      setStatusMessage('LinkedIn request sent ✅');
+    if (formData.linkedin && result.linkedin_connected) {
+      setStatusMessage('LinkedIn request sent ✅ — If you don’t see it, check your LinkedIn notifications.');
       setFormData(prev => ({ ...prev, linkedin: '' }));
     }
 
@@ -83,7 +83,7 @@ export const Contact = () => {
 
       const result = await response.json();
       if (result.status === 'outreach triggered') {
-        setStatusMessage('Conversation started ✅');
+        setStatusMessage('Email sent ✅ — If you don’t see it, please check your spam folder.');
       } else {
         setStatusMessage('Something went wrong ❌');
       }
