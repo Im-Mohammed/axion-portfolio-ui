@@ -47,7 +47,7 @@ export default function ChatBot() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL || 'https://axion-backend-api-latest.onrender.com';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://moportfolio-backend.onrender.com';
 
   const nextStep = () => setStep(prev => prev + 1);
   const prevStep = () => setStep(prev => Math.max(prev - 1, 0));

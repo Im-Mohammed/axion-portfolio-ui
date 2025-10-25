@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Contact.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://axion-backend-api-latest.onrender.com';
+const API_URL = import.meta.env.VITE_API_URL || 'https://moportfolio-backend.onrender.com';
 
 export const Contact = () => {
   const [activeField, setActiveField] = useState('');
@@ -103,6 +103,7 @@ export const Contact = () => {
   }, [statusMessage]);
 
   return (
+    <>
     <section id="contact" className="contact-section">
       <div className="gradient-blinds" />
       <h1 className="contact-title">Let’s Connect</h1>
@@ -179,5 +180,10 @@ export const Contact = () => {
         )}
       </div>
     </section>
+      <footer className="portfolio-footer">
+  © 2025 Mohammed Karab Ehtesham. All rights reserved.
+</footer>
+</>
   );
+
 };
