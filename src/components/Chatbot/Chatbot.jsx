@@ -78,7 +78,7 @@ export default function ChatBot() {
   const handleVisitorFlow = async () => {
     try {
       await sendContactRequest('Exploring portfolio');
-      setTimeout(() => navigate('/home'), 1500);
+      setTimeout(() => navigate('/home'), 2000);
     } catch (err) {
       console.error('Error in visitor flow:', err);
       navigate('/home');
@@ -205,7 +205,7 @@ export default function ChatBot() {
 
               {step === 3 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Your email? <span className="required">*</span></p>
+                  <p className="chat-subtext">Your email Please ? <span className="required">*</span></p>
                   <input
                     type="email"
                     className="chat-input"
