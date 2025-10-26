@@ -45,14 +45,14 @@ export const Contact = () => {
     const result = await response.json();
 
     if (result.email_sent) {
-      setStatusMessage('Email sent ✅ — If it hasn’t landed in your inbox, take a peek in your spam folder.');
+      setStatusMessage('Email sent  — If it hasn’t landed in your inbox, take a peek in your spam folder or promotions tab.');
     }
     if (formData.github && result.github_followed) {
-      setStatusMessage('GitHub request sent ✅');
+      setStatusMessage('GitHub request sent!!!!');
       setFormData(prev => ({ ...prev, github: '' }));
     }
     if (formData.linkedin && result.linkedin_connected) {
-      setStatusMessage('LinkedIn request sent ✅ — If you don’t see it, check your LinkedIn notifications.');
+      setStatusMessage('LinkedIn request sent!!!!');
       setFormData(prev => ({ ...prev, linkedin: '' }));
     }
 

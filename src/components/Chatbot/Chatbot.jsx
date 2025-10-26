@@ -254,7 +254,7 @@ export default function ChatBot() {
               )}
 
               {loading && <p className="chat-subtext mt-3">Sending resume…</p>}
-              {resumeSent && (<p className="chat-subtext mt-3">Resume sent via email ✅ — If you don’t see it, please check your spam folder.</p>
+              {resumeSent && (<p className="chat-subtext mt-3">Resume sent via email  — If you don’t see it, please check your spam folder or promotions tab.</p>
     )}
 
               {error && <p className="chat-subtext error-text">{error}</p>}
