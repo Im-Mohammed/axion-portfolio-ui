@@ -17,7 +17,7 @@
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.1.0",
     "@splinetool/react-spline": "^4.1.0",
-    "@splinetool/runtime": "^1.10.48",
+    "@splinetool/runtime": "^1.10.86",
     "framer-motion": "^12.23.12",
     "gl-matrix": "^3.4.4",
     "gsap": "^3.13.0",

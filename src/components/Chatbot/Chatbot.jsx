@@ -65,7 +65,8 @@ export default function ChatBot() {
         company: role === 'hr' ? company : '',
         type: role === 'hr' ? 'HR' : 'Visitor',
         answers,
-        userType: role === 'hr' ? 'hr' : 'visitor'
+        userType: role === 'hr' ? 'hr' : 'visitor',
+        isHiring
       }),
     });
   } catch (err) {
@@ -76,12 +77,6 @@ export default function ChatBot() {
 
   const handleVisitorFlow = async () => {
     try {
-      await fetch(`${API_URL}/check-visitor`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email: visitorEmail }),
-      });
-
       await sendContactRequest('Exploring portfolio');
       setTimeout(() => navigate('/home'), 1500);
     } catch (err) {
@@ -194,7 +189,7 @@ export default function ChatBot() {
 
               {step === 2 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Your email? <span className="required">*</span></p>
+                  <p className="chat-subtext">Your company? <span className="required">*</span></p>
                   <input
                     type="text"
                     className="chat-input"
