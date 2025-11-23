@@ -76,14 +76,21 @@ export default function ChatBot() {
 
 
   const handleVisitorFlow = async () => {
+    if (visitorSubmitted) return; // prevent duplicates
+    setVisitorSubmitted(true);
+    setLoading(true);
     try {
       await sendContactRequest('Exploring portfolio');
-      setTimeout(() => navigate('/home'), 2000);
+      // show redirecting message while navigating
+      navigate('/home');
     } catch (err) {
       console.error('Error in visitor flow:', err);
       navigate('/home');
+    } finally {
+      setLoading(false);
     }
   };
+
 
   const sendCustomizedResume = async () => {
   setLoading(true);
@@ -172,20 +179,25 @@ export default function ChatBot() {
               )}
 
               {step === 2 && role === 'visitor' && (
-                <>
-                  <p className="chat-subtext">And your email? <span className="required">*</span></p>
-                  <input
-                    type="email"
-                    className="chat-input"
-                    value={visitorEmail}
-                    onChange={e => setVisitorEmail(e.target.value)}
-                    placeholder="Enter your email"
-                  />
-                  <div className="button-group">
-                    <GlassButton label="Continue to Portfolio" onClick={handleVisitorFlow} />
-                  </div>
-                </>
-              )}
+                  <>
+                    <p className="chat-subtext">And your email? <span className="required">*</span></p>
+                    <input
+                      type="email"
+                      className="chat-input"
+                      value={visitorEmail}
+                      onChange={e => setVisitorEmail(e.target.value)}
+                      placeholder="Enter your email"
+                    />
+                    <div className="button-group">
+                      <GlassButton 
+                        label={loading ? "Redirecting…" : "Continue to Portfolio"} 
+                        onClick={handleVisitorFlow} 
+                        disabled={visitorSubmitted || loading} 
+                      />
+                    </div>
+                    {loading && <p className="chat-subtext mt-3">Redirecting to home page…</p>}
+                  </>
+                )}
 
               {step === 2 && role === 'hr' && (
                 <>
@@ -205,7 +217,7 @@ export default function ChatBot() {
 
               {step === 3 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Your email Please ? <span className="required">*</span></p>
+                  <p className="chat-subtext">Your email please <span className="required">*</span></p>
                   <input
                     type="email"
                     className="chat-input"
@@ -253,7 +265,7 @@ export default function ChatBot() {
                 </>
               )}
 
-              {loading && <p className="chat-subtext mt-3">Sending resume…</p>}
+              {loading && <p className="chat-subtext mt-3">Please wait for few seconds.Sending resume…</p>}
               {resumeSent && (<p className="chat-subtext mt-3">Resume sent via email  — If you don’t see it, please check your spam folder or promotions tab.</p>
     )}
 
