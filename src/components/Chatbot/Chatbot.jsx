@@ -38,6 +38,14 @@ const BackButton = ({ onClick }) => (
 );
 
 export default function ChatBot() {
+
+
+   useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/health`, { cache: 'no-store' }).catch(() => {});
+    fetch(`${import.meta.env.VITE_API_URL}/portfolio/all`, { cache: 'no-store' }).catch(() => {});
+  }, []);
+
+  
   const [step, setStep]                   = useState(0);
   const [role, setRole]                   = useState('');
   const [name, setName]                   = useState('');
