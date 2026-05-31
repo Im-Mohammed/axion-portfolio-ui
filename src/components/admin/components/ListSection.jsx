@@ -29,7 +29,7 @@ export default function ListSection({ title, section, data, fields, onRefresh })
   };
 
   const handleDelete = async (id) => {
-    if (!confirm(`Delete this ${section} item?`)) return;
+    if (!confirm(`Delete this item from ${section}?`)) return;
     try {
       await fetch(`${API}/admin/portfolio/${section}/${id}`, {
         method:  'DELETE',
@@ -41,22 +41,39 @@ export default function ListSection({ title, section, data, fields, onRefresh })
     }
   };
 
+  // Extract a readable title from any item shape
+  const getTitle = (item) =>
+    item.title || item.name || item.role || '—';
+
+  // Extract a readable subtitle from any item shape
+  const getSub = (item) => {
+    const raw =
+      item.subtitle ||
+      item.summary  ||
+      item.source   ||
+      item.company  ||
+      (item.description ? item.description.slice(0, 80) + (item.description.length > 80 ? '…' : '') : '');
+    return raw || '';
+  };
+
   return (
     <div className="portfolio-section">
-      <div className="section-header">
-        <div>
+      {/* Header */}
+      <div className="portfolio-section-header">
+        <div className="ps-left">
           <h3>{title}</h3>
-          <p>{data.length} items</p>
+          <span className="ps-count">{data.length} items</span>
         </div>
         <button className="add-btn" onClick={() => setAdding(v => !v)}>
           {adding ? '✕ Cancel' : '+ Add'}
         </button>
       </div>
 
+      {/* Add form */}
       {adding && (
         <div className="add-form">
           {fields.map(f => (
-            <div className="form-field" key={f.key}>
+            <div className={`form-field${f.textarea ? ' full' : ''}`} key={f.key}>
               <label>{f.label}</label>
               {f.textarea ? (
                 <textarea
@@ -82,22 +99,26 @@ export default function ListSection({ title, section, data, fields, onRefresh })
         </div>
       )}
 
+      {/* Item list */}
       <div className="item-list">
-        {data.length === 0 && <div className="empty-state">No items yet.</div>}
-        {data.map(item => (
-          <div className="item-row" key={item.id}>
+        {data.length === 0 && (
+          <div className="empty-state" style={{ padding: '1.5rem' }}>
+            No items yet. Click + Add to get started.
+          </div>
+        )}
+        {data.map((item, idx) => (
+          <div className="item-row" key={item.id || idx}>
             <div className="item-info">
-              <span className="item-title">
-                {item.title || item.name || item.role || '—'}
-              </span>
-              <span className="item-sub">
-                {item.subtitle || item.summary
-                  || item.description?.slice(0, 80)
-                  || item.source || ''}
-                {item.description?.length > 80 ? '…' : ''}
-              </span>
+              <span className="item-title">{getTitle(item)}</span>
+              {getSub(item) && (
+                <span className="item-sub">{getSub(item)}</span>
+              )}
             </div>
-            <button className="delete-btn" onClick={() => handleDelete(item.id)}>
+            <button
+              className="delete-btn"
+              onClick={() => handleDelete(item.id)}
+              title="Delete"
+            >
               ✕
             </button>
           </div>

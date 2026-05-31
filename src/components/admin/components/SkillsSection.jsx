@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { authHdr, API } from '../adminUtils';
 
 export default function SkillsSection({ data, onRefresh }) {
-  const [adding, setAdding]     = useState(false);
-  const [category, setCategory] = useState('');
-  const [newCat, setNewCat]     = useState('');
+  const [adding, setAdding]       = useState(false);
+  const [category, setCategory]   = useState('');
+  const [newCat, setNewCat]       = useState('');
   const [skillName, setSkillName] = useState('');
   const [skillIcon, setSkillIcon] = useState('');
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState('');
+  const [loading, setLoading]     = useState(false);
+  const [error, setError]         = useState('');
 
-  const categories    = Object.keys(data);
-  const resolvedCat   = category === '__new__' ? newCat.trim() : category;
+  const categories  = Object.keys(data);
+  const resolvedCat = category === '__new__' ? newCat.trim() : category;
 
   const handleAdd = async () => {
     if (!resolvedCat || !skillName || !skillIcon) {
@@ -55,18 +55,22 @@ export default function SkillsSection({ data, onRefresh }) {
     }
   };
 
+  const totalSkills = categories.reduce((sum, cat) => sum + (data[cat]?.length || 0), 0);
+
   return (
     <div className="portfolio-section">
-      <div className="section-header">
-        <div>
+      {/* Header */}
+      <div className="portfolio-section-header">
+        <div className="ps-left">
           <h3>Skills</h3>
-          <p>{categories.length} categories</p>
+          <span className="ps-count">{categories.length} categories · {totalSkills} skills</span>
         </div>
         <button className="add-btn" onClick={() => setAdding(v => !v)}>
           {adding ? '✕ Cancel' : '+ Add Skill'}
         </button>
       </div>
 
+      {/* Add form */}
       {adding && (
         <div className="add-form">
           <div className="form-field">
@@ -121,28 +125,32 @@ export default function SkillsSection({ data, onRefresh }) {
         </div>
       )}
 
-      {categories.map(cat => (
-        <div className="skill-category-block" key={cat}>
-          <div className="skill-category-title">{cat}</div>
-          <div className="skill-chips">
-            {data[cat].map(skill => (
-              <div className="skill-chip" key={skill.name}>
-                <img
-                  src={skill.icon}
-                  alt={skill.name}
-                  className="chip-icon"
-                  onError={e => { e.target.style.display = 'none'; }}
-                />
-                <span>{skill.name}</span>
-                <button
-                  className="chip-delete"
-                  onClick={() => handleDelete(cat, skill.name)}
-                >×</button>
-              </div>
-            ))}
+      {/* Skill chips grouped by category */}
+      <div className="skill-categories">
+        {categories.map(cat => (
+          <div className="skill-category-block" key={cat}>
+            <div className="skill-category-title">{cat}</div>
+            <div className="skill-chips">
+              {(data[cat] || []).map(skill => (
+                <div className="skill-chip" key={skill.name}>
+                  <img
+                    src={skill.icon}
+                    alt={skill.name}
+                    className="chip-icon"
+                    onError={e => { e.target.style.display = 'none'; }}
+                  />
+                  <span>{skill.name}</span>
+                  <button
+                    className="chip-delete"
+                    onClick={() => handleDelete(cat, skill.name)}
+                    title={`Remove ${skill.name}`}
+                  >×</button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
