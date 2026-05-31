@@ -61,8 +61,10 @@ export default function ChatBot() {
   const navigate                          = useNavigate();
 
   const nextStep = () => setStep(prev => prev + 1);
-  const prevStep = () => setStep(prev => Math.max(prev - 1, 0));
-
+  const prevStep = () => {
+    setError('');
+    setStep(prev => Math.max(prev - 1, 0));
+  };
   // ── Log visitor — matches backend User model exactly ──────────────
   const logVisitor = async (answers) => {
     await fetch(`${API_URL}/log-visitor`, {
@@ -358,9 +360,6 @@ export default function ChatBot() {
                     Taking you to the portfolio now…
                   </p>
                 )}
-              {error && !loading && (
-                <p className="chat-subtext error-text">{error}</p>
-              )}
 
             </AnimatePresence>
           </div>
