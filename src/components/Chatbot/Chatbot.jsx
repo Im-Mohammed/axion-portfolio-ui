@@ -45,7 +45,7 @@ export default function ChatBot() {
     fetch(`${import.meta.env.VITE_API_URL}/portfolio/all`, { cache: 'no-store' }).catch(() => {});
   }, []);
 
-  
+
   const [step, setStep]                   = useState(0);
   const [role, setRole]                   = useState('');
   const [name, setName]                   = useState('');
@@ -124,6 +124,7 @@ export default function ChatBot() {
     setLoading(true);
     try {
       await logVisitor(`Hiring for: ${roleDescription}`);
+      // Response is instant now — navigate immediately
       setResumeSent(true);
     } catch {
       setError('Something went wrong. Please try again.');
@@ -132,7 +133,6 @@ export default function ChatBot() {
     }
   };
 
-  // ── HR — not hiring flow ───────────────────────────────────────────
   const sendDefaultResume = async () => {
     setLoading(true);
     try {
@@ -353,11 +353,11 @@ export default function ChatBot() {
 
               {/* Status messages */}
               {resumeSent && (
-                <p className="chat-subtext mt-3">
-                  Resume sent — if you don't see it, check your spam or promotions tab.
-                  Redirecting you now…
-                </p>
-              )}
+                  <p className="chat-subtext mt-3">
+                    You'll receive an email shortly, check your inbox or spam folder.
+                    Taking you to the portfolio now…
+                  </p>
+                )}
               {error && !loading && (
                 <p className="chat-subtext error-text">{error}</p>
               )}
