@@ -9,35 +9,32 @@ import { Projects } from './components/projects/projects';
 import { Achievements } from './components/achievements/achievements';
 import { Publications } from './components/publications/publications';
 import { Contact } from './components/Contact/Contact';
-import ChatBot from './components/Chatbot/Chatbot'; // Make sure this path matches your folder structure
+import AdminPanel from './components/admin/AdminPanel';
+import ChatBot from './components/Chatbot/Chatbot';
 import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <Routes>
-        {/* 👇 ChatBot is now the default landing page */}
-        <Route path="/" element={<ChatBot />} />
+    <Routes>
+      <Route path="/" element={<ChatBot />} />
 
-        {/* 👇 Full portfolio moved to /home */}
-        <Route path="/home" element={
-          <>
-            <Navbar />
-            
-            <LandingPage />
-            <About />
-            <Service />
-            <Skills />
-            <Projects />
-            <Achievements />
-            <Publications />
-            <Contact />
-          </>
-        } />
-      </Routes>
-    </>
+      <Route path="/home" element={
+        <>
+          <Navbar />
+          <LandingPage />
+          <About />
+          <Service />
+          <Skills />
+          <Projects />
+          <Achievements />
+          <Publications />
+          <Contact />
+        </>
+      } />
+
+      {/* No link anywhere — only accessible by typing /admin in the URL */}
+      <Route path="/admin" element={<AdminPanel />} />
+    </Routes>
   );
 }
 

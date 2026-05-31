@@ -1,40 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Service.css';
 import LightRays from '../../reactbits/LightRays/LightRays';
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from 'react-vertical-timeline-component';
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
 export const Service = () => {
-  const experiences = [
-    {
-      role: 'Software Developer',
-      company: 'Caalm-ai',
-      location: 'Remote',
-      period: 'Aug 2025 – Present',
-      description: `At Caalm.ai, I built and scaled backend systems that power intelligent document workflows from OCR and classification to semantic search and metadata extraction. I worked across cloud and on-prem environments, using Docker, Azure Blob Storage, and Azure AI Document Intelligence to deploy flexible, reliable services. I also developed RAG applications with Melvis as a vector database, enabling smarter, context-aware responses. My backend handled asynchronous tasks with Redis and Celery, supported rollback-safe versioning, and followed modular service contracts to keep everything maintainable and audit-friendly. It was all about making complex systems feel seamless for users.` ,
-    },
-    {
-      role: 'AI System Developer',
-      company: 'Freelance Project',
-      location: 'Remote',
-      period: 'May 2025 – July 2025',
-      description: `Built an intelligent automation agent to resolve network issues triggered by SolarWinds alerts and Freshservice tickets, reducing manual triage and speeding up recovery. Integrated secure access via CyberArk CCP for real-time diagnostics across routers and firewalls, and automated troubleshooting with SSH-based workflows. Used Azure OpenAI to generate structured recommendations, and delivered a modular framework that supported tailored recovery across Cisco, Versa, Ruckus, and Palo Alto devices cutting NOC workload by 80%.`,
-    },
-    {
-      role: 'AI Application Developer',
-      App: 'MindSYNC',
-      location: 'Remote',
-      period: 'Mar 2025 – April 2025',
-      description: `Built MindSync, an emotion-adaptive learning platform that personalizes quiz difficulty and feedback based on real-time facial expressions. Used DeepFace, OpenCV, and Django to detect user emotions and adjust content dynamically, boosting engagement and retention through responsive, human-centered design.`,
-    },
-  ];
+  const [experiences, setExperiences] = useState([]);
+  const [loading, setLoading]         = useState(true);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/portfolio/experience`)
+      .then(res => res.json())
+      .then(data => { setExperiences(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return <section className="experience-section"><p>Loading...</p></section>;
 
   return (
     <section id="experience" className="experience-section">
-      {/* Background */}
       <div className="light-rays-wrapper">
         <LightRays
           raysOrigin="left"
@@ -49,8 +33,6 @@ export const Service = () => {
           className="custom-rays"
         />
       </div>
-
-      {/* Timeline Content */}
       <div className="service-content">
         <h1 className="title">Experience</h1>
         <VerticalTimeline lineColor="#5533ea">
