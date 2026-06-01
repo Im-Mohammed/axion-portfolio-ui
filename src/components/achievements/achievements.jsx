@@ -18,7 +18,7 @@ export const Achievements = memo(({ data = [] }) => {
         />
         <div className="badge-title-links">
           {data.map((item, index) => (
-            
+            <a
               key={item.id || index}
               href={item.url}
               target="_blank"
