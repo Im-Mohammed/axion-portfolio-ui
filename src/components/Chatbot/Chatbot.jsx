@@ -51,7 +51,7 @@ export default function ChatBot() {
         .then(r => r.ok ? r.json() : null)
         .then(data => {
           if (data) {
-            import('../portfolioCache').then(({ setCache }) => setCache(data));
+            import('.././../portfolioCache').then(({ setCache }) => setCache(data));
           }
         })
         .catch(() => {});
