@@ -42,8 +42,20 @@ export default function ChatBot() {
 
    // Chatbot.jsx — only wake up, don't prefetch
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/health`, { cache: 'no-store' }).catch(() => {});
-  }, []);
+      // Wake backend
+      fetch(`${API}/health`, { cache: 'no-store' }).catch(() => {});
+
+      // Start fetching portfolio data immediately in background
+      // By the time user fills the form, data will be ready
+      fetch(`${API}/portfolio/all`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data) {
+            import('../portfolioCache').then(({ setCache }) => setCache(data));
+          }
+        })
+        .catch(() => {});
+    }, []);
 
 
   const [step, setStep]                   = useState(0);
