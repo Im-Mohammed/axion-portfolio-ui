@@ -4,9 +4,10 @@ import SplitText from '../../reactbits/SplitText/SplitText';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import DarkVeil from '../../reactbits/DarkVeil/DarkVeil';
+import { setCache } from '../../portfolioCache';    // ← static import, correct path
 import './Chatbot.css';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL;           // ← one name used everywhere
 
 const GlassButton = ({ label, onClick, disabled = false }) => (
   <motion.button
@@ -39,106 +40,85 @@ const BackButton = ({ onClick }) => (
 
 export default function ChatBot() {
 
-
-   // Chatbot.jsx — only wake up, don't prefetch
+  // Wake backend + prefetch portfolio data while user fills form
   useEffect(() => {
-      // Wake backend
-      fetch(`${API}/health`, { cache: 'no-store' }).catch(() => {});
+    fetch(`${API}/health`, { cache: 'no-store' }).catch(() => {});
+    fetch(`${API}/portfolio/all`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data) setCache(data); })
+      .catch(() => {});
+  }, []);
 
-      // Start fetching portfolio data immediately in background
-      // By the time user fills the form, data will be ready
-      fetch(`${API}/portfolio/all`)
-        .then(r => r.ok ? r.json() : null)
-        .then(data => {
-          if (data) {
-            import('.././../portfolioCache').then(({ setCache }) => setCache(data));
-          }
-        })
-        .catch(() => {});
-    }, []);
-
-
-  const [step, setStep]                   = useState(0);
-  const [role, setRole]                   = useState('');
-  const [name, setName]                   = useState('');
-  const [company, setCompany]             = useState('');
-  const [isHiring, setIsHiring]           = useState(null);
+  const [step, setStep]                       = useState(0);
+  const [role, setRole]                       = useState('');
+  const [name, setName]                       = useState('');
+  const [company, setCompany]                 = useState('');
+  const [isHiring, setIsHiring]               = useState(null);
   const [roleDescription, setRoleDescription] = useState('');
-  const [hrEmail, setHrEmail]             = useState('');
-  const [visitorEmail, setVisitorEmail]   = useState('');
-  const [resumeSent, setResumeSent]       = useState(false);
-  const [loading, setLoading]             = useState(false);
-  const [error, setError]                 = useState('');
-  const [redirecting, setRedirecting]     = useState(false);
-  const navigate                          = useNavigate();
+  const [hrEmail, setHrEmail]                 = useState('');
+  const [visitorEmail, setVisitorEmail]       = useState('');
+  const [resumeSent, setResumeSent]           = useState(false);
+  const [loading, setLoading]                 = useState(false);
+  const [error, setError]                     = useState('');
+  const [redirecting, setRedirecting]         = useState(false);
+  const [skipping, setSkipping]               = useState(false);  // ← prevents double-click
+  const navigate                              = useNavigate();
 
   const nextStep = () => setStep(prev => prev + 1);
-  const prevStep = () => {
-    setError('');
-    setStep(prev => Math.max(prev - 1, 0));
-  };
-  // ── Log visitor — matches backend User model exactly ──────────────
+  const prevStep = () => { setError(''); setStep(prev => Math.max(prev - 1, 0)); };
+
   const logVisitor = async (answers) => {
-    await fetch(`${API_URL}/log-visitor`, {
-      method: 'POST',
+    await fetch(`${API}/log-visitor`, {
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name:     name.trim(),
         email:    role === 'hr' ? hrEmail.trim() : visitorEmail.trim(),
-        userType: role,            // 'hr' or 'visitor' — matches backend enum
+        userType: role,
         company:  company.trim(),
-        role:     '',              // job title — not collected in this flow
+        role:     '',
         answers:  answers,
         isHiring: isHiring,
       }),
     });
   };
 
-  // ── Log skip — no PII ─────────────────────────────────────────────
   const logSkip = async () => {
     try {
-      await fetch(`${API_URL}/log-skip`, {
-        method: 'POST',
+      await fetch(`${API}/log-skip`, {
+        method:  'POST',
         headers: { 'Content-Type': 'application/json' },
       });
     } catch {
-      // Skip logging failure silently — don't block navigation
+      // fail silently
     }
   };
 
-  // ── Visitor flow ───────────────────────────────────────────────────
   const handleVisitorFlow = async () => {
-    if (!visitorEmail.trim()) {
-      setError('Please enter your email.');
-      return;
-    }
+    if (!visitorEmail.trim()) { setError('Please enter your email.'); return; }
     setError('');
     setRedirecting(true);
     try {
       await logVisitor('Exploring portfolio');
     } catch {
-      // Log failure silently — still navigate
+      // fail silently — still navigate
     }
     setTimeout(() => navigate('/home'), 1500);
   };
 
-  // ── Skip — goes straight to portfolio ─────────────────────────────
   const handleSkip = async () => {
+    if (skipping) return;         // prevent double-click
+    setSkipping(true);
     await logSkip();
     navigate('/home');
   };
 
-  // ── HR — hiring flow ───────────────────────────────────────────────
   const sendCustomizedResume = async () => {
-    if (!roleDescription.trim()) {
-      setError('Please describe the role.');
-      return;
-    }
+    if (!roleDescription.trim()) { setError('Please describe the role.'); return; }
     setError('');
     setLoading(true);
     try {
       await logVisitor(`Hiring for: ${roleDescription}`);
-      // Response is instant now — navigate immediately
       setResumeSent(true);
     } catch {
       setError('Something went wrong. Please try again.');
@@ -189,7 +169,6 @@ export default function ChatBot() {
 
             <AnimatePresence>
 
-              {/* Step 0 — Who are you */}
               {step === 0 && (
                 <>
                   <p className="chat-subtext">
@@ -202,17 +181,18 @@ export default function ChatBot() {
                   <div className="button-group">
                     <GlassButton label="Visitor" onClick={() => { setRole('visitor'); nextStep(); }} />
                     <GlassButton label="HR"      onClick={() => { setRole('hr');      nextStep(); }} />
-                    <GlassButton label="Skip"    onClick={handleSkip} />
+                    <GlassButton
+                      label={skipping ? 'Going…' : 'Skip'}
+                      onClick={handleSkip}
+                      disabled={skipping}
+                    />
                   </div>
                 </>
               )}
 
-              {/* Step 1 — Name */}
               {step === 1 && (
                 <>
-                  <p className="chat-subtext">
-                    May I have your name? <span className="required">*</span>
-                  </p>
+                  <p className="chat-subtext">May I have your name? <span className="required">*</span></p>
                   <input
                     type="text"
                     className="chat-input"
@@ -226,20 +206,16 @@ export default function ChatBot() {
                       label="Next"
                       onClick={() => {
                         if (!name.trim()) { setError('Please enter your name.'); return; }
-                        setError('');
-                        nextStep();
+                        setError(''); nextStep();
                       }}
                     />
                   </div>
                 </>
               )}
 
-              {/* Step 2 — Visitor email */}
               {step === 2 && role === 'visitor' && (
                 <>
-                  <p className="chat-subtext">
-                    And your email? <span className="required">*</span>
-                  </p>
+                  <p className="chat-subtext">And your email? <span className="required">*</span></p>
                   <input
                     type="email"
                     className="chat-input"
@@ -259,12 +235,9 @@ export default function ChatBot() {
                 </>
               )}
 
-              {/* Step 2 — HR company */}
               {step === 2 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">
-                    Your company? <span className="required">*</span>
-                  </p>
+                  <p className="chat-subtext">Your company? <span className="required">*</span></p>
                   <input
                     type="text"
                     className="chat-input"
@@ -278,20 +251,16 @@ export default function ChatBot() {
                       label="Next"
                       onClick={() => {
                         if (!company.trim()) { setError('Please enter your company name.'); return; }
-                        setError('');
-                        nextStep();
+                        setError(''); nextStep();
                       }}
                     />
                   </div>
                 </>
               )}
 
-              {/* Step 3 — HR email */}
               {step === 3 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">
-                    Your email? <span className="required">*</span>
-                  </p>
+                  <p className="chat-subtext">Your email? <span className="required">*</span></p>
                   <input
                     type="email"
                     className="chat-input"
@@ -305,20 +274,16 @@ export default function ChatBot() {
                       label="Next"
                       onClick={() => {
                         if (!hrEmail.trim()) { setError('Please enter your email.'); return; }
-                        setError('');
-                        nextStep();
+                        setError(''); nextStep();
                       }}
                     />
                   </div>
                 </>
               )}
 
-              {/* Step 4 — HR hiring? */}
               {step === 4 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">
-                    Are you currently looking to hire?
-                  </p>
+                  <p className="chat-subtext">Are you currently looking to hire?</p>
                   <div className="button-group">
                     <GlassButton label="Yes" onClick={() => { setIsHiring(true);  nextStep(); }} />
                     <GlassButton label="No"  onClick={() => { setIsHiring(false); nextStep(); }} />
@@ -326,12 +291,9 @@ export default function ChatBot() {
                 </>
               )}
 
-              {/* Step 5 — HR hiring — role description */}
               {step === 5 && isHiring === true && (
                 <>
-                  <p className="chat-subtext">
-                    Great! Could you describe the role you're hiring for?
-                  </p>
+                  <p className="chat-subtext">Great! Could you describe the role you're hiring for?</p>
                   <textarea
                     className="chat-input"
                     value={roleDescription}
@@ -349,7 +311,6 @@ export default function ChatBot() {
                 </>
               )}
 
-              {/* Step 5 — HR not hiring */}
               {step === 5 && isHiring === false && (
                 <>
                   <p className="chat-subtext">
@@ -365,13 +326,12 @@ export default function ChatBot() {
                 </>
               )}
 
-              {/* Status messages */}
               {resumeSent && (
-                  <p className="chat-subtext mt-3">
-                    You'll receive an email shortly, check your inbox or spam folder.
-                    Taking you to the portfolio now…
-                  </p>
-                )}
+                <p className="chat-subtext mt-3">
+                  You'll receive an email shortly — check your inbox or spam folder.
+                  Taking you to the portfolio now…
+                </p>
+              )}
 
             </AnimatePresence>
           </div>
