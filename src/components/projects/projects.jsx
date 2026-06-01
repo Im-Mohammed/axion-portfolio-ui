@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { memo } from 'react';
 import ChromaGrid from '../../reactbits/ChromaGrid/ChromaGrid';
 import './projects.css';
-import React, { memo } from 'react';
 
 export const Projects = memo(({ data = [] }) => {
   if (!data || data.length === 0) return null;

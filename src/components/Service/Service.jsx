@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
-import './Service.css';
+import { memo } from 'react';
 import LightRays from '../../reactbits/LightRays/LightRays';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import './Service.css';
 
 export const Service = memo(({ data = [] }) => {
   if (!data || data.length === 0) return null;
