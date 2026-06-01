@@ -142,7 +142,7 @@ function Home() {
 
       {/* Always mounted — never conditionally rendered */}
       <LandingPage />
-
+      <Achievements data={portfolio?.achievements || []} />
       {/* Data sections — shown below LandingPage */}
       {loading && !portfolio ? (
         // First load — no cache — show spinner below landing
