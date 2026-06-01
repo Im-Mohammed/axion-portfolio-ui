@@ -182,8 +182,8 @@ function Home() {
       <Navbar />
       {revalidating && <SyncBadge />}
       <LandingPage />
-      <About />
-      <Service      data={portfolio?.experience   || []} />
+      <About        data={portfolio?.about         || []}/>
+      <Service      data={portfolio?.experience    || []} />
       <Skills       data={portfolio?.skills        || {}} />
       <Projects     data={portfolio?.projects      || []} />
       <Achievements data={portfolio?.achievements  || []} />

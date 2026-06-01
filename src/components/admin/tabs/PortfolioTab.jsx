@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { API } from '../adminUtils';
 import ListSection  from '../components/ListSection';
 import SkillsSection from '../components/SkillsSection';
-
+import AboutSection  from '../components/AboutSection'; 
 const PROJECT_FIELDS = [
   { key: 'title',       label: 'Title',        placeholder: 'Project name' },
   { key: 'subtitle',    label: 'Subtitle',     placeholder: 'Tech • Stack • Keywords' },
@@ -29,9 +29,12 @@ const PUBLICATION_FIELDS = [
 ];
 
 const ACHIEVEMENT_FIELDS = [
-  { key: 'title', label: 'Title', placeholder: 'Certification or achievement name' },
+  { key: 'title',       label: 'Title',        placeholder: 'CCNA Introduction to Networks' },
+  { key: 'image',       label: 'Badge Image',  placeholder: '/badges/cisco1.svg' },
+  { key: 'url',         label: 'Credential URL', placeholder: 'https://www.credly.com/badges/...' },
+  { key: 'borderColor', label: 'Border Color', placeholder: '#7855f7' },
+  { key: 'gradient',    label: 'Gradient',     placeholder: 'linear-gradient(135deg, #7855f7, #33ccff)' },
 ];
-
 export default function PortfolioTab() {
   const [data, setData]       = useState(null);
   const [loading, setLoading] = useState(true);
@@ -68,6 +71,12 @@ export default function PortfolioTab() {
           <p>Changes reflect on the live site immediately</p>
         </div>
       </div>
+
+      {/* About — edit personal info */}
+      <AboutSection
+        data={data.about || null}
+        onRefresh={load}
+      />
 
       <SkillsSection  data={data.skills       || {}} onRefresh={load} />
       <ListSection    title="Projects"      section="projects"     data={data.projects      || []} fields={PROJECT_FIELDS}     onRefresh={load} />
