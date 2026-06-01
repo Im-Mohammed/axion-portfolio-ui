@@ -4,18 +4,19 @@ import SplitText from '../../reactbits/SplitText/SplitText';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import DarkVeil from '../../reactbits/DarkVeil/DarkVeil';
-import { setCache } from '../../portfolioCache';    // ← static import, correct path
+import { setCache } from '../../portfolioCache';
 import './Chatbot.css';
 
-const API = import.meta.env.VITE_API_URL;           // ← one name used everywhere
+const API = import.meta.env.VITE_API_URL;
 
+// ── Glass button ───────────────────────────────────────────────────────────
 const GlassButton = ({ label, onClick, disabled = false }) => (
   <motion.button
     whileHover={{
-      scale: disabled ? 1 : 1.05,
+      scale:           disabled ? 1 : 1.05,
       backgroundColor: '#7e22ce',
-      color: '#fff',
-      boxShadow: '0 0 15px rgba(126,34,206,0.6)',
+      color:           '#fff',
+      boxShadow:       '0 0 15px rgba(126,34,206,0.6)',
     }}
     whileTap={{ scale: disabled ? 1 : 0.95 }}
     className="glass-button"
@@ -27,6 +28,7 @@ const GlassButton = ({ label, onClick, disabled = false }) => (
   </motion.button>
 );
 
+// ── Back button ────────────────────────────────────────────────────────────
 const BackButton = ({ onClick }) => (
   <motion.button
     whileHover={{ scale: 1.05, color: '#7e22ce' }}
@@ -38,9 +40,10 @@ const BackButton = ({ onClick }) => (
   </motion.button>
 );
 
+// ── ChatBot ────────────────────────────────────────────────────────────────
 export default function ChatBot() {
 
-  // Wake backend + prefetch portfolio data while user fills form
+  // Wake backend + prefetch portfolio data while user fills the form
   useEffect(() => {
     fetch(`${API}/health`, { cache: 'no-store' }).catch(() => {});
     fetch(`${API}/portfolio/all`)
@@ -61,19 +64,32 @@ export default function ChatBot() {
   const [loading, setLoading]                 = useState(false);
   const [error, setError]                     = useState('');
   const [redirecting, setRedirecting]         = useState(false);
-  const [skipping, setSkipping]               = useState(false);  // ← prevents double-click
+  const [skipping, setSkipping]               = useState(false);
   const navigate                              = useNavigate();
 
   const nextStep = () => setStep(prev => prev + 1);
-  const prevStep = () => { setError(''); setStep(prev => Math.max(prev - 1, 0)); };
+  const prevStep = () => {
+    setError('');
+    setStep(prev => Math.max(prev - 1, 0));
+  };
 
+  // ── Save visitor context for Contact component ─────────────────────────
+  const saveContext = (email, type) => {
+    sessionStorage.setItem('visitor_email', email);
+    sessionStorage.setItem('visitor_name',  name.trim());
+    sessionStorage.setItem('visitor_type',  type);
+  };
+
+  // ── Log visitor to backend ─────────────────────────────────────────────
   const logVisitor = async (answers) => {
+    const email = role === 'hr' ? hrEmail.trim() : visitorEmail.trim();
+
     await fetch(`${API}/log-visitor`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name:     name.trim(),
-        email:    role === 'hr' ? hrEmail.trim() : visitorEmail.trim(),
+        email:    email,
         userType: role,
         company:  company.trim(),
         role:     '',
@@ -81,8 +97,12 @@ export default function ChatBot() {
         isHiring: isHiring,
       }),
     });
+
+    // Save context so Contact component knows the visitor's email
+    saveContext(email, role);
   };
 
+  // ── Log skip — no PII collected ────────────────────────────────────────
   const logSkip = async () => {
     try {
       await fetch(`${API}/log-skip`, {
@@ -90,12 +110,30 @@ export default function ChatBot() {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch {
-      // fail silently
+      // fail silently — never block navigation
     }
   };
 
+  // ── Skip handler ───────────────────────────────────────────────────────
+  const handleSkip = async () => {
+    if (skipping) return;   // prevent double-click
+    setSkipping(true);
+
+    // Mark as skipped — Contact will show email input field
+    sessionStorage.setItem('visitor_email', '');
+    sessionStorage.setItem('visitor_name',  '');
+    sessionStorage.setItem('visitor_type',  'skipped');
+
+    await logSkip();
+    navigate('/home');
+  };
+
+  // ── Visitor flow ───────────────────────────────────────────────────────
   const handleVisitorFlow = async () => {
-    if (!visitorEmail.trim()) { setError('Please enter your email.'); return; }
+    if (!visitorEmail.trim()) {
+      setError('Please enter your email.');
+      return;
+    }
     setError('');
     setRedirecting(true);
     try {
@@ -106,15 +144,12 @@ export default function ChatBot() {
     setTimeout(() => navigate('/home'), 1500);
   };
 
-  const handleSkip = async () => {
-    if (skipping) return;         // prevent double-click
-    setSkipping(true);
-    await logSkip();
-    navigate('/home');
-  };
-
+  // ── HR — hiring ────────────────────────────────────────────────────────
   const sendCustomizedResume = async () => {
-    if (!roleDescription.trim()) { setError('Please describe the role.'); return; }
+    if (!roleDescription.trim()) {
+      setError('Please describe the role.');
+      return;
+    }
     setError('');
     setLoading(true);
     try {
@@ -127,6 +162,7 @@ export default function ChatBot() {
     }
   };
 
+  // ── HR — not hiring ────────────────────────────────────────────────────
   const sendDefaultResume = async () => {
     setLoading(true);
     try {
@@ -139,12 +175,14 @@ export default function ChatBot() {
     }
   };
 
+  // Navigate to /home after resume sent
   useEffect(() => {
     if (resumeSent) {
       setTimeout(() => navigate('/home'), 1500);
     }
   }, [resumeSent]);
 
+  // ── Render ─────────────────────────────────────────────────────────────
   return (
     <div className="chatbot-container">
       <div className="background-layer">
@@ -169,6 +207,7 @@ export default function ChatBot() {
 
             <AnimatePresence>
 
+              {/* ── Step 0 — Role selection ── */}
               {step === 0 && (
                 <>
                   <p className="chat-subtext">
@@ -179,8 +218,14 @@ export default function ChatBot() {
                     Let's begin. Who do I have the honor of guiding today?
                   </p>
                   <div className="button-group">
-                    <GlassButton label="Visitor" onClick={() => { setRole('visitor'); nextStep(); }} />
-                    <GlassButton label="HR"      onClick={() => { setRole('hr');      nextStep(); }} />
+                    <GlassButton
+                      label="Visitor"
+                      onClick={() => { setRole('visitor'); nextStep(); }}
+                    />
+                    <GlassButton
+                      label="HR"
+                      onClick={() => { setRole('hr'); nextStep(); }}
+                    />
                     <GlassButton
                       label={skipping ? 'Going…' : 'Skip'}
                       onClick={handleSkip}
@@ -190,15 +235,19 @@ export default function ChatBot() {
                 </>
               )}
 
+              {/* ── Step 1 — Name ── */}
               {step === 1 && (
                 <>
-                  <p className="chat-subtext">May I have your name? <span className="required">*</span></p>
+                  <p className="chat-subtext">
+                    May I have your name? <span className="required">*</span>
+                  </p>
                   <input
                     type="text"
                     className="chat-input"
                     value={name}
                     onChange={e => { setName(e.target.value); setError(''); }}
                     placeholder="Enter your name"
+                    autoFocus
                   />
                   {error && <p className="chat-subtext error-text">{error}</p>}
                   <div className="button-group">
@@ -206,22 +255,27 @@ export default function ChatBot() {
                       label="Next"
                       onClick={() => {
                         if (!name.trim()) { setError('Please enter your name.'); return; }
-                        setError(''); nextStep();
+                        setError('');
+                        nextStep();
                       }}
                     />
                   </div>
                 </>
               )}
 
+              {/* ── Step 2 — Visitor email ── */}
               {step === 2 && role === 'visitor' && (
                 <>
-                  <p className="chat-subtext">And your email? <span className="required">*</span></p>
+                  <p className="chat-subtext">
+                    And your email? <span className="required">*</span>
+                  </p>
                   <input
                     type="email"
                     className="chat-input"
                     value={visitorEmail}
                     onChange={e => { setVisitorEmail(e.target.value); setError(''); }}
                     placeholder="Enter your email"
+                    autoFocus
                   />
                   {error && <p className="chat-subtext error-text">{error}</p>}
                   <div className="button-group">
@@ -231,19 +285,25 @@ export default function ChatBot() {
                       disabled={redirecting}
                     />
                   </div>
-                  {redirecting && <p className="chat-subtext mt-3">Taking you to the portfolio…</p>}
+                  {redirecting && (
+                    <p className="chat-subtext mt-3">Taking you to the portfolio…</p>
+                  )}
                 </>
               )}
 
+              {/* ── Step 2 — HR company ── */}
               {step === 2 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Your company? <span className="required">*</span></p>
+                  <p className="chat-subtext">
+                    Your company? <span className="required">*</span>
+                  </p>
                   <input
                     type="text"
                     className="chat-input"
                     value={company}
                     onChange={e => { setCompany(e.target.value); setError(''); }}
                     placeholder="Enter company name"
+                    autoFocus
                   />
                   {error && <p className="chat-subtext error-text">{error}</p>}
                   <div className="button-group">
@@ -251,22 +311,27 @@ export default function ChatBot() {
                       label="Next"
                       onClick={() => {
                         if (!company.trim()) { setError('Please enter your company name.'); return; }
-                        setError(''); nextStep();
+                        setError('');
+                        nextStep();
                       }}
                     />
                   </div>
                 </>
               )}
 
+              {/* ── Step 3 — HR email ── */}
               {step === 3 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Your email? <span className="required">*</span></p>
+                  <p className="chat-subtext">
+                    Your email? <span className="required">*</span>
+                  </p>
                   <input
                     type="email"
                     className="chat-input"
                     value={hrEmail}
                     onChange={e => { setHrEmail(e.target.value); setError(''); }}
                     placeholder="Enter your email"
+                    autoFocus
                   />
                   {error && <p className="chat-subtext error-text">{error}</p>}
                   <div className="button-group">
@@ -274,16 +339,20 @@ export default function ChatBot() {
                       label="Next"
                       onClick={() => {
                         if (!hrEmail.trim()) { setError('Please enter your email.'); return; }
-                        setError(''); nextStep();
+                        setError('');
+                        nextStep();
                       }}
                     />
                   </div>
                 </>
               )}
 
+              {/* ── Step 4 — HR hiring? ── */}
               {step === 4 && role === 'hr' && (
                 <>
-                  <p className="chat-subtext">Are you currently looking to hire?</p>
+                  <p className="chat-subtext">
+                    Are you currently looking to hire?
+                  </p>
                   <div className="button-group">
                     <GlassButton label="Yes" onClick={() => { setIsHiring(true);  nextStep(); }} />
                     <GlassButton label="No"  onClick={() => { setIsHiring(false); nextStep(); }} />
@@ -291,14 +360,18 @@ export default function ChatBot() {
                 </>
               )}
 
+              {/* ── Step 5 — HR role description ── */}
               {step === 5 && isHiring === true && (
                 <>
-                  <p className="chat-subtext">Great! Could you describe the role you're hiring for?</p>
+                  <p className="chat-subtext">
+                    Great! Could you describe the role you're hiring for?
+                  </p>
                   <textarea
                     className="chat-input"
                     value={roleDescription}
                     onChange={e => { setRoleDescription(e.target.value); setError(''); }}
                     placeholder="Describe the role"
+                    autoFocus
                   />
                   {error && <p className="chat-subtext error-text">{error}</p>}
                   <div className="button-group">
@@ -311,6 +384,7 @@ export default function ChatBot() {
                 </>
               )}
 
+              {/* ── Step 5 — HR not hiring ── */}
               {step === 5 && isHiring === false && (
                 <>
                   <p className="chat-subtext">
@@ -326,6 +400,7 @@ export default function ChatBot() {
                 </>
               )}
 
+              {/* ── Status ── */}
               {resumeSent && (
                 <p className="chat-subtext mt-3">
                   You'll receive an email shortly — check your inbox or spam folder.
@@ -336,6 +411,7 @@ export default function ChatBot() {
             </AnimatePresence>
           </div>
 
+          {/* ── Spline robot ── */}
           <motion.div
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}

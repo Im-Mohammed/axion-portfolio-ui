@@ -378,3 +378,14 @@
     padding: 0.5rem;
   }
 }
+.contact-email-known {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #a78bdb;
+  padding: 0.5rem 0.75rem;
+  flex: 1;
+}
+
+.contact-email-known strong {
+  color: #f3e8ff;
+}
