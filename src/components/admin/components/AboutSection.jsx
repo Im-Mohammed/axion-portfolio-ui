@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authHdr, API } from '../adminUtils';
+import { authHdr, API, invalidatePortfolioCache } from '../adminUtils';
 
 export default function AboutSection({ data, onRefresh }) {
   const [editing, setEditing] = useState(false);
@@ -45,7 +45,7 @@ export default function AboutSection({ data, onRefresh }) {
 
       const d = await res.json();
       if (!res.ok) { setError(d.detail || 'Failed to save.'); return; }
-
+      invalidatePortfolioCache();
       setEditing(false);
       onRefresh();
     } catch {

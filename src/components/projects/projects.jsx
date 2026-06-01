@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import ChromaGrid from '../../reactbits/ChromaGrid/ChromaGrid';
 import './projects.css';
+import React, { memo } from 'react';
 
-export const Projects = () => {
-  const [items, setItems]   = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/portfolio/projects`)
-      .then(res => res.json())
-      .then(data => { setItems(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) return <section className="projects-section"><p>Loading...</p></section>;
-
+export const Projects = memo(({ data = [] }) => {
+  if (!data || data.length === 0) return null;
   return (
     <section id="projects" className="projects-section">
       <h1 className="projects-title">Projects</h1>
       <div className="chroma-wrapper">
         <ChromaGrid
-          items={items}
+          items={data}
           radius={300}
           damping={0.45}
           fadeOut={0.6}
@@ -29,4 +19,4 @@ export const Projects = () => {
       </div>
     </section>
   );
-};
+});

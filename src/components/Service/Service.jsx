@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import './Service.css';
 import LightRays from '../../reactbits/LightRays/LightRays';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
-export const Service = () => {
-  const [experiences, setExperiences] = useState([]);
-  const [loading, setLoading]         = useState(true);
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/portfolio/experience`)
-      .then(res => res.json())
-      .then(data => { setExperiences(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) return <section className="experience-section"><p>Loading...</p></section>;
-
+export const Service = memo(({ data = [] }) => {
+  if (!data || data.length === 0) return null;
   return (
     <section id="experience" className="experience-section">
       <div className="light-rays-wrapper">
@@ -36,7 +25,7 @@ export const Service = () => {
       <div className="service-content">
         <h1 className="title">Experience</h1>
         <VerticalTimeline lineColor="#5533ea">
-          {experiences.map((exp, index) => (
+          {data.map((exp, index) => (
             <VerticalTimelineElement
               key={index}
               className="vertical-timeline-element--work"
@@ -63,4 +52,4 @@ export const Service = () => {
       </div>
     </section>
   );
-};
+});

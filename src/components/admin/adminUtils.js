@@ -5,3 +5,10 @@ export const authHdr  = () => ({
   'Content-Type': 'application/json',
   Authorization: `Bearer ${token()}`,
 });
+export function invalidatePortfolioCache() {
+  try {
+    localStorage.removeItem('portfolio_data');
+  } catch {
+    // fail silently
+  }
+}

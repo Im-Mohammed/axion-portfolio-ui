@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authHdr, API } from '../adminUtils';
+import { authHdr, API, invalidatePortfolioCache } from '../adminUtils';
 
 export default function ListSection({ title, section, data, fields, onRefresh }) {
   const [adding, setAdding]   = useState(false);
@@ -18,6 +18,7 @@ export default function ListSection({ title, section, data, fields, onRefresh })
       });
       const d = await res.json();
       if (!res.ok) { setError(d.detail || 'Failed to add item.'); return; }
+      invalidatePortfolioCache();   
       setForm({});
       setAdding(false);
       onRefresh();
@@ -35,6 +36,7 @@ export default function ListSection({ title, section, data, fields, onRefresh })
         method:  'DELETE',
         headers: authHdr(),
       });
+      invalidatePortfolioCache();
       onRefresh();
     } catch {
       alert('Delete failed.');

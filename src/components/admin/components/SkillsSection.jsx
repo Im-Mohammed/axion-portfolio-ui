@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authHdr, API } from '../adminUtils';
+import { authHdr, API, invalidatePortfolioCache } from '../adminUtils';
 
 export default function SkillsSection({ data, onRefresh }) {
   const [adding, setAdding]       = useState(false);
@@ -34,6 +34,7 @@ export default function SkillsSection({ data, onRefresh }) {
       setSkillName('');
       setSkillIcon('');
       setAdding(false);
+      invalidatePortfolioCache();
       onRefresh();
     } catch {
       setError('Server error.');
@@ -49,6 +50,7 @@ export default function SkillsSection({ data, onRefresh }) {
         `${API}/admin/portfolio/skills/${encodeURIComponent(cat)}/${encodeURIComponent(name)}`,
         { method: 'DELETE', headers: authHdr() }
       );
+      invalidatePortfolioCache();
       onRefresh();
     } catch {
       alert('Delete failed.');
