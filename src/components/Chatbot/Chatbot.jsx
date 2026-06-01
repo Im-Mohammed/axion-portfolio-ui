@@ -4,7 +4,6 @@ import SplitText from '../../reactbits/SplitText/SplitText';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import DarkVeil from '../../reactbits/DarkVeil/DarkVeil';
-import { setCache } from '../../portfolioCache';
 import './Chatbot.css';
 
 const API = import.meta.env.VITE_API_URL;
