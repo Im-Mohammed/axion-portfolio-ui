@@ -16,24 +16,7 @@ import './App.css';
 
 const API = import.meta.env.VITE_API_URL;
 
-// ── Loading spinner ────────────────────────────────────────────────────────
-const Spinner = () => (
-  <>
-    <style>{`
-      @keyframes _spin { to { transform: rotate(360deg); } }
-      .portfolio-spinner {
-        width: 32px; height: 32px;
-        border: 2px solid rgba(120,85,247,0.2);
-        border-top-color: #7855f7;
-        border-radius: 50%;
-        animation: _spin 0.8s linear infinite;
-      }
-    `}</style>
-    <div className="portfolio-spinner" />
-  </>
-);
-
-// ── Sync badge (shown during background revalidation) ─────────────────────
+// ── Sync badge ─────────────────────────────────────────────────────────────
 const SyncBadge = () => (
   <>
     <style>{`
@@ -67,14 +50,44 @@ const SyncBadge = () => (
   </>
 );
 
+// ── Inline spinner for data sections ──────────────────────────────────────
+const DataSpinner = () => (
+  <>
+    <style>{`
+      @keyframes _spin { to { transform: rotate(360deg); } }
+      .data-spinner {
+        width: 28px; height: 28px;
+        border: 2px solid rgba(120,85,247,0.2);
+        border-top-color: #7855f7;
+        border-radius: 50%;
+        animation: _spin 0.8s linear infinite;
+      }
+    `}</style>
+    <div style={{
+      minHeight: '40vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '0.75rem',
+      background: '#000',
+      color: '#7855f7',
+      fontFamily: 'monospace',
+      fontSize: '0.82rem',
+    }}>
+      <div className="data-spinner" />
+      Loading…
+    </div>
+  </>
+);
+
 // ── Home ───────────────────────────────────────────────────────────────────
 function Home() {
   const cached = getCached();
 
-  const [portfolio, setPortfolio]     = useState(cached?.data || null);
-  const [loading, setLoading]         = useState(!cached?.data);
+  const [portfolio, setPortfolio]       = useState(cached?.data || null);
+  const [loading, setLoading]           = useState(!cached?.data);
   const [revalidating, setRevalidating] = useState(!!cached?.data);
-  const mountedRef                    = useRef(true);
+  const mountedRef                      = useRef(true);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -82,7 +95,6 @@ function Home() {
     const cached       = getCached();
 
     if (cached?.data) {
-      // Show cached data immediately — fresh or stale
       if (mountedRef.current) {
         setPortfolio(cached.data);
         setLoading(false);
@@ -90,7 +102,6 @@ function Home() {
       }
     }
 
-    // Always fetch fresh data in background
     fetch(`${API}/portfolio/all`, { signal: controller.signal })
       .then(r => {
         if (!r.ok) throw new Error(`${r.status}`);
@@ -99,14 +110,16 @@ function Home() {
       .then(data => {
         if (!mountedRef.current) return;
         setCache(data);
-        setPortfolio(data);
+        // Only update state if data actually changed — prevents unnecessary re-renders
+        setPortfolio(prev =>
+          JSON.stringify(prev) === JSON.stringify(data) ? prev : data
+        );
         setLoading(false);
         setRevalidating(false);
       })
       .catch(err => {
         if (!mountedRef.current) return;
         if (err.name === 'AbortError') return;
-        // Fetch failed — if we have cached data keep showing it, else show error state
         if (mountedRef.current) {
           setLoading(false);
           setRevalidating(false);
@@ -119,76 +132,64 @@ function Home() {
     };
   }, []);
 
-  // No cache + fetch still loading → show full page spinner
-  if (loading && !portfolio) return (
-    <>
-      <Navbar />
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '1rem',
-        background: '#000',
-        color: '#7855f7',
-        fontFamily: 'monospace',
-        fontSize: '0.85rem',
-      }}>
-        <Spinner />
-        Loading portfolio…
-      </div>
-    </>
-  );
-
-  // No data at all (cache miss + fetch failed) → retry prompt
-  if (!portfolio) return (
-    <>
-      <Navbar />
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '1rem',
-        background: '#000',
-        color: '#a78bdb',
-        fontFamily: 'monospace',
-        fontSize: '0.85rem',
-      }}>
-        <p>Could not load portfolio data.</p>
-        <button
-          onClick={() => window.location.reload()}
-          style={{
-            padding: '0.5rem 1.25rem',
-            background: 'rgba(120,85,247,0.12)',
-            border: '1px solid rgba(120,85,247,0.35)',
-            borderRadius: '0.5rem',
-            color: '#7855f7',
-            cursor: 'pointer',
-            fontFamily: 'monospace',
-            fontSize: '0.82rem',
-          }}
-        >
-          Retry
-        </button>
-      </div>
-    </>
-  );
-
+  // ── CRITICAL: LandingPage is ALWAYS rendered first ─────────────────────
+  // It must never be inside a conditional — Spline/WebGL context is lost
+  // when the component unmounts. memo() only works if it stays in the tree.
   return (
     <>
       <Navbar />
       {revalidating && <SyncBadge />}
+
+      {/* Always mounted — never conditionally rendered */}
       <LandingPage />
-      <About        data={portfolio?.about         || []}/>
-      <Service      data={portfolio?.experience    || []} />
-      <Skills       data={portfolio?.skills        || {}} />
-      <Projects     data={portfolio?.projects      || []} />
-      <Achievements data={portfolio?.achievements  || []} />
-      <Publications data={portfolio?.publications  || []} />
-      <Contact />
+
+      {/* Data sections — shown below LandingPage */}
+      {loading && !portfolio ? (
+        // First load — no cache — show spinner below landing
+        <DataSpinner />
+      ) : !portfolio ? (
+        // Cache miss + fetch failed — show retry
+        <div style={{
+          minHeight: '40vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1rem',
+          background: '#000',
+          color: '#a78bdb',
+          fontFamily: 'monospace',
+          fontSize: '0.85rem',
+        }}>
+          <p>Could not load portfolio data.</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '0.5rem 1.25rem',
+              background: 'rgba(120,85,247,0.12)',
+              border: '1px solid rgba(120,85,247,0.35)',
+              borderRadius: '0.5rem',
+              color: '#7855f7',
+              cursor: 'pointer',
+              fontFamily: 'monospace',
+              fontSize: '0.82rem',
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      ) : (
+        // Data loaded — render all sections
+        <>
+          <About        data={portfolio?.about} />
+          <Service      data={portfolio?.experience   || []} />
+          <Skills       data={portfolio?.skills        || {}} />
+          <Projects     data={portfolio?.projects      || []} />
+          <Achievements data={portfolio?.achievements  || []} />
+          <Publications data={portfolio?.publications  || []} />
+          <Contact />
+        </>
+      )}
     </>
   );
 }
