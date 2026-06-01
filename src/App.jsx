@@ -1,4 +1,5 @@
-import { Routes, Route, useEffect, useState } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';        
+import { useState, useEffect } from 'react';              
 import { LandingPage } from './components/landingpage';
 import { About } from './components/About/about';
 import { Navbar } from './components/Navbar/navbar';
