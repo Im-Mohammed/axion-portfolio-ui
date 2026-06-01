@@ -40,9 +40,9 @@ const BackButton = ({ onClick }) => (
 export default function ChatBot() {
 
 
-   useEffect(() => {
+   // Chatbot.jsx — only wake up, don't prefetch
+  useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/health`, { cache: 'no-store' }).catch(() => {});
-    fetch(`${import.meta.env.VITE_API_URL}/portfolio/all`, { cache: 'no-store' }).catch(() => {});
   }, []);
 
 
