@@ -1,4 +1,4 @@
-import  { memo } from 'react';
+import { memo } from 'react';
 import Spline from '@splinetool/react-spline';
 import TextPressure from '../reactbits/TextPressure/TextPressure.jsx';
 import TrueFocus from '../reactbits/TrueFocus/TrueFocus.jsx';

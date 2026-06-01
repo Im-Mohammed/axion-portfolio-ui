@@ -135,63 +135,50 @@ function Home() {
   // ── CRITICAL: LandingPage is ALWAYS rendered first ─────────────────────
   // It must never be inside a conditional — Spline/WebGL context is lost
   // when the component unmounts. memo() only works if it stays in the tree.
-  return (
-    <>
-      <Navbar />
-      {revalidating && <SyncBadge />}
+return (
+  <>
+    <Navbar />
+    {revalidating && <SyncBadge />}
 
-      {/* Always mounted — never conditionally rendered */}
-      <LandingPage />
-      <Achievements data={portfolio?.achievements || []} />
-      {/* Data sections — shown below LandingPage */}
-      {loading && !portfolio ? (
-        // First load — no cache — show spinner below landing
+    {loading && !portfolio ? (
+      <>
+        <LandingPage />
         <DataSpinner />
-      ) : !portfolio ? (
-        // Cache miss + fetch failed — show retry
+      </>
+    ) : !portfolio ? (
+      <>
+        <LandingPage />
         <div style={{
           minHeight: '40vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1rem',
-          background: '#000',
-          color: '#a78bdb',
-          fontFamily: 'monospace',
-          fontSize: '0.85rem',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          gap: '1rem', background: '#000',
+          color: '#a78bdb', fontFamily: 'monospace', fontSize: '0.85rem',
         }}>
           <p>Could not load portfolio data.</p>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: '0.5rem 1.25rem',
-              background: 'rgba(120,85,247,0.12)',
-              border: '1px solid rgba(120,85,247,0.35)',
-              borderRadius: '0.5rem',
-              color: '#7855f7',
-              cursor: 'pointer',
-              fontFamily: 'monospace',
-              fontSize: '0.82rem',
-            }}
-          >
-            Retry
-          </button>
+          <button onClick={() => window.location.reload()} style={{
+            padding: '0.5rem 1.25rem',
+            background: 'rgba(120,85,247,0.12)',
+            border: '1px solid rgba(120,85,247,0.35)',
+            borderRadius: '0.5rem', color: '#7855f7',
+            cursor: 'pointer', fontFamily: 'monospace', fontSize: '0.82rem',
+          }}>Retry</button>
         </div>
-      ) : (
-        // Data loaded — render all sections
-        <>
-          <About        data={portfolio?.about} />
-          <Service      data={portfolio?.experience   || []} />
-          <Skills       data={portfolio?.skills        || {}} />
-          <Projects     data={portfolio?.projects      || []} />
-          <Achievements data={portfolio?.achievements  || []} />
-          <Publications data={portfolio?.publications  || []} />
-          <Contact />
-        </>
-      )}
-    </>
-  );
+      </>
+    ) : (
+      <>
+        <LandingPage />
+        <About        data={portfolio?.about} />
+        <Service      data={portfolio?.experience   || []} />
+        <Skills       data={portfolio?.skills        || {}} />
+        <Projects     data={portfolio?.projects      || []} />
+        <Achievements data={portfolio?.achievements  || []} />
+        <Publications data={portfolio?.publications  || []} />
+        <Contact />
+      </>
+    )}
+  </>
+);
 }
 
 // ── App ────────────────────────────────────────────────────────────────────
