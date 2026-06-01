@@ -45,11 +45,8 @@ export default function ChatBot() {
 
   // Wake backend + prefetch portfolio data while user fills the form
   useEffect(() => {
+    // Only wake the backend — no prefetch needed
     fetch(`${API}/health`, { cache: 'no-store' }).catch(() => {});
-    fetch(`${API}/portfolio/all`)
-      .then(r => r.ok ? r.json() : null)
-      .then(data => { if (data) setCache(data); })
-      .catch(() => {});
   }, []);
 
   const [step, setStep]                       = useState(0);

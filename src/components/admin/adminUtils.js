@@ -1,14 +1,9 @@
-// adminUtils.js — shared across all admin files
-export const API      = import.meta.env.VITE_API_URL;
-export const token    = () => sessionStorage.getItem('admin_token');
-export const authHdr  = () => ({
+export const API     = import.meta.env.VITE_API_URL;
+export const token   = () => sessionStorage.getItem('admin_token');
+export const authHdr = () => ({
   'Content-Type': 'application/json',
   Authorization: `Bearer ${token()}`,
 });
-export function invalidatePortfolioCache() {
-  try {
-    localStorage.removeItem('portfolio_data');
-  } catch {
-    // fail silently
-  }
-}
+
+// No-op — cache removed, kept to avoid import errors
+export function invalidatePortfolioCache() {}
