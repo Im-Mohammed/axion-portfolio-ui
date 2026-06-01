@@ -4,7 +4,10 @@ import { useInView } from '../../hooks/useInView';
 import './projects.css';
 
 export const Projects = memo(({ data = [] }) => {
-  const [sectionRef, inView] = useInView({ rootMargin: '300px' });
+  const [sectionRef, inView] = useInView({
+    mode:       'toggle',
+    rootMargin: '100px',
+  });
 
   if (!data || data.length === 0) return null;
 

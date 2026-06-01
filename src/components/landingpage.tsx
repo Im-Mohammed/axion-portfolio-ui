@@ -2,14 +2,21 @@ import { memo } from 'react';
 import Spline from '@splinetool/react-spline';
 import TextPressure from '../reactbits/TextPressure/TextPressure.jsx';
 import TrueFocus from '../reactbits/TrueFocus/TrueFocus.jsx';
+import { useInView } from '../hooks/useInView';
 import './landingpage.css';
 
 export const LandingPage = memo(() => {
+  const [sectionRef, inView] = useInView({
+    mode:       'toggle',
+    rootMargin: '0px',    // unmount immediately when scrolled away
+  });
+
   return (
-    <section id="home" className="landing-section">
+    <section id="home" className="landing-section" ref={sectionRef}>
       <div className="landing-container">
         <div className="spline-scene">
-          <Spline scene="/spline/scene.splinecode" />
+          {/* Only render Spline when landing section is visible */}
+          {inView && <Spline scene="/spline/scene.splinecode" />}
         </div>
         <div className="variable-text">
           <div style={{ position: 'relative', height: '200px' }}>

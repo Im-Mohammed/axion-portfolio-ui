@@ -1,26 +1,35 @@
 /**
  * useInView.js
- * Returns true once an element has entered the viewport.
- * Once true, stays true — component stays mounted forever after.
- * Uses IntersectionObserver — no scroll listeners, zero performance cost.
+ * Tracks viewport visibility for lazy mounting of heavy components.
+ * 
+ * mode: 'once'   — mounts when visible, stays mounted (default)
+ * mode: 'toggle' — mounts when visible, UNMOUNTS when scrolled away
+ *                  use for WebGL to free GPU memory
  */
 import { useState, useEffect, useRef } from 'react';
 
 export function useInView(options = {}) {
   const ref             = useRef(null);
   const [inView, setInView] = useState(false);
+  const mode            = options.mode || 'once';
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setInView(true);
-        observer.disconnect(); // stop observing — never unmount again
+      if (mode === 'toggle') {
+        // Unmount when scrolled away — frees WebGL context
+        setInView(entry.isIntersecting);
+      } else {
+        // Once visible, always visible
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
       }
     }, {
-      rootMargin: options.rootMargin || '200px', // start loading 200px before visible
+      rootMargin: options.rootMargin || '200px',
       threshold:  options.threshold  || 0,
     });
 
