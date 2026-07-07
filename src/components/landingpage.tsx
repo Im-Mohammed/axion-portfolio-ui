@@ -16,6 +16,8 @@ export const LandingPage = () => {
         <div style={{position: 'relative', height: '200px'}}>
           <TextPressure
            text="Mohammed  Karab  Ehtesham"
+           fontFamily="Merriweather Variable"
+           fontUrl="/fonts/merriweather-latin-standard-normal.woff2"
            flex={true}
            alpha={false}
            stroke={false}
