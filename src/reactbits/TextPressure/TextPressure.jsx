@@ -76,7 +76,6 @@ const TextPressure = ({
 
     let newFontSize = containerW / (chars.length / 2);
     newFontSize = Math.max(newFontSize, minFontSize);
-    newFontSize = Math.min(newFontSize, 80); // add this
 
     setFontSize(newFontSize);
     setScaleY(1);
