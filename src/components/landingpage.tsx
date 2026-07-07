@@ -15,16 +15,16 @@ export const LandingPage = () => {
       <div className="variable-text">
         <div style={{position: 'relative', height: '200px'}}>
           <TextPressure
-           text="Mohammed  Karab  Ehtesham"
-           fontFamily="Merriweather Variable"
-           fontUrl="/fonts/merriweather-latin-standard-normal.woff2"
-           flex={true}
-           alpha={false}
-           stroke={false}
-           width={true}
-           weight={false}
-           italic={false}
-           textColor="#ffffff"
+            text="Mohammed  Karab  Ehtesham"
+            fontFamily="Merriweather Variable"
+            fontUrl="/fonts/merriweather-latin-standard-normal.woff2"
+            flex={false}
+            alpha={false}
+            stroke={false}
+            width={true}
+            weight={true}
+            italic={false}
+            textColor="#ffffff"
             strokeColor="#ff0000"
             minFontSize={25}
           />
